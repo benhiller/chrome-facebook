@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script>
+      var xhr;
+
+      function postStatus() {
+        var status = $('#composer-area').val();
+        $('#composer-area').val('What\'s on your mind?');
+        var url = 'http://lite.facebook.com' + $('#fb #content .FN_publisher .LPublisherView .FN_write-view.profileWall .FN_write-form').attr('action');
+        console.log(url);
+        console.log(status);
+        jQuery.post(url, {"source": "home", "message": status, "__async__": "true" });
+      }
+
+      function loadProfilePic() {
+        var src = $('#fb-wall #content .profilePicture').attr('src');
+        $('#pic').append('<img src="'+ src + '" width="40" height="40" title="Post a Status" />');
+      }
+
+      function processFeedback(f) {
+        var feed = $('<div class="feedback"></div>');
+        var likes = $('<div class="likes"></div>');
+        var likeLink = f.find('.FN_does_not_like a').text();
+        var likeText = f.find('.FN_does_not_like').text();
+
+        if(likeLink != '') {
+          likes.append('<a href="#">'+likeLink+'</a>');
+          likes.append(likeText.split(likeLink)[1]);
+          feed.append(likes);
+        }
+        var comments = $('<ul class="comments"></ul>');
+        f.find('.FN_all_comments .comment').map(function() {
+          var comment = $('<li class="comment"></li>');
+          comment.append('<div class="comment-info"><a href="#" class="comment-name">'+$(this).find('.p').text()+'</a>' +
+            '<span class="comment-time">'+$(this).find('.time').text()+'</span></div>');
+          comment.append('<div class="comment-msg">'+$(this).find('p').text()+'</div>')
+          comments.append(comment);
+          return 1;
+        });
+        feed.append(comments);
+        return feed;
+      }
+
+      // TODO
+      function showCommentBox() {
+        if($(this).parent().parent().find('.feedback .comments .post-comment').length == 1) {
+          return;
+        } else {
+          var area = $('<li class="post-comment"><textarea cols="48" rows="3"></textarea><button class="comment-btn">Comment</button></li> ');
+          area.find('.comment-btn').click(function() {
+
+          });
+          $(this).parent().parent().find('.feedback .comments').append(area);
+        }
+      }
+
+      function newStreamPost(li) {
+        if(li.hasClass('paginatorDummyStory')) {
+          $('#loading').hide();
+          return;
+        }
+        var picSrc = li.find('.profilePhoto img').attr('src');
+        var name = li.find('.actors .p').text();
+        var time = li.find('.actors .time').text();
+        var msg = li.find('.actors + p').text();
+        var feedback = processFeedback(li.find('.FN_ufi_container .UFIView'));
+        var f = li.find('.FN_ufi_container .meta');
+        var likeHref = 'http://lite.facebook.com' + f.find('.FN_like').attr('href');
+        var unlikeHref = 'http://lite.facebook.com' + f.find('.FN_unlike').attr('href');
+        var likeF = like(likeHref);
+        var unlikeF = unlike(unlikeHref);
+        var l = $('<li></li>');
+        l.append('<div class="pic"><img src="'+ picSrc +'" /></div>');
+        var post = $('<div class="post"></div>');
+        post.append('<div class="info"><a href="#" class="name">'+name+'</a>'+
+                    '<span class="time">'+time+'</span></div>');
+        post.append('<div class="msg">'+msg+'</div>');
+        post.append('<div class="actions"><a class="comment-btn">Comment</a> &#183; <a class="like-btn">Like</a></div>');
+        if(f.find('.FN_unlike').css('display') == 'none') {
+          post.find('.like-btn').toggle(likeF, unlikeF);
+        } else {
+          post.find('.like-btn').toggle(unlikeF, likeF);
+        }
+        post.find('.comment-btn').click(showCommentBox);
+        post.append(feedback);
+        l.append(post);
+        $('#stream').append(l);
+      }
+
+      function like(url) {
+        return function() {
+          $(this).text('Unlike');
+          jQuery.get(url);
+        };
+      }
+
+      function unlike(url) {
+        return function() {
+          $(this).text('Like');
+          jQuery.get(url);
+        };
+      }
+
+      function getStreamPosts() {
+        $('#fb').load('http://lite.facebook.com', null, function() {
+          if($('#fb #content #home_stream li').length == 0) {
+            $("#error").show();
+          }
+          var wall = 'http://lite.facebook.com' + $('#fb #header #navigation > a:nth-child(2)').attr('href');
+          $('#fb-wall').load(wall, null, function() {
+            $('#fb-wall').hide();
+            loadProfilePic();
+          });
+          $('#fb #content #home_stream li').map(function() {
+            newStreamPost($(this));
+            return 1;
+          });
+        });
+        $('#fb').hide();
+      }
+
+      function handlePosts() {
+        var doc = xhr.responseXML;
+        //console.log(xhr.responseText);
+      }
+
+      $(document).ready(function() {
+        getStreamPosts();
+
+        $('#items li').click(function() {
+          if(!$(this).hasClass('selected'))  {
+            $('#' + $('#items li.selected').attr('id').replace('-btn', '')).slideUp();
+            $('#' + $(this).attr('id').replace('-btn', '')).slideDown();
+            $('#items li.selected').removeClass('selected');
+            $(this).addClass('selected');
+          }
+        });
+
+        $('#pic').click(function() {
+          if($('#composer').css('display') == 'none') {
+            $("#composer").fadeIn();
+          } else {
+            $("#composer").fadeOut();
+          }
+        });
+
+        $('#composer-area').focus(function() {
+          $(this).val('');
+        });
+
+        $('#composer-submit').click(function() {
+          postStatus();
+          $("#composer").fadeOut();
+        });
+
+        $('#composer-cancel').click(function() {
+          $("#composer").fadeOut();
+          $('#composer-area').val('What\'s on your mind?');
+        });
+      });
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div id="sidebar">
+      <div id="pic">
+      </div>
+      <ul id="items">
+        <li id="stream-btn" class=" selected"><img src="streambw.png" title="Live Feed"/></li>
+        <li id="wall-btn"><img src="incomingbw.png" title="Wall" /></li>
+        <li id="inbox-btn"><img src="inboxbw.png" title="Inbox" /></li>
+      </ul>
+    </div>
+    <div id="content">
+      <div id="loading">
+        <img src="loading.gif" />
+      </div>
+      <ul id="stream">
+      </ul>
+    <ul id="wall">
+      TODO, should be similar to stream
+    </ul>
+    <ul id="inbox">
+      <li>
+        TODO
+      </li>
+    </ul>
+    </div>
+    <div id="composer">
+      <textarea rows="5" cols="49" id="composer-area">What's on your mind?</textarea>
+      <button id="composer-submit">Share</button>
+      <button id="composer-cancel">Cancel</button>
+    </div>
+    <div id="fb">
+    </div>
+    <div id="fb-wall">
+    </div>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "Facebook Extension for Chrome",
+  "description": "...",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "version": "0.1",
+  "background_page": "background.html",
+  "browser_action": {
+    "default_icon": "icon19.png",
+    "default_title": "Facebook",
+    "popup": "popup.html"
+  },
+  "permissions": [
+    "http://*.facebook.com/"
+  ]
+}
