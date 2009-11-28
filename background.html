@@ -3,6 +3,7 @@
     <script src="jquery.js"></script>
 <script>
   var wall;
+  var profileURL;
   var fb;
   var frequency = 1000 * 60 * 7; // How frequently do we update? Every 7 minutes
   var mostRecentStream;
@@ -20,8 +21,8 @@
 
   function getWallPosts(update, cb) {
     if($('#fb-wall').find('#content').length == 0 || update) {
-      wallUrl = 'http://lite.facebook.com' + $('#fb #header #navigation > a:nth-child(2)').attr('href');
-      $('#fb-wall').load(wallUrl, null, function() {
+      profileURL = 'http://lite.facebook.com' + $('#fb #header #navigation > a:nth-child(2)').attr('href');
+      $('#fb-wall').load(profileURL, null, function() {
         cb($('#fb-wall'));
       });
     } else {
@@ -35,9 +36,7 @@
       mostRecentStream = $('#fb #content #contentWrapper #home_stream li:first .actors .time').attr('href');
     } else {
       // determine newStream
-      alert(mostRecentStream);
       var newStream = $('#fb #content #contentWrapper #home_stream li:first .actors .time').attr('href');
-      alert(newStream);
       if(mostRecentStream != newStream) {
         mostRecentStream = newStream;
         chrome.browserAction.setBadgeText({text: "X" });
@@ -47,8 +46,9 @@
 
   function determineMostRecentWall() {
     if(mostRecentWall === undefined) {
-      // determine mostRecentWall
+      mostRecentWall = $('#fb #content #contentWrapper .LSplitPage_Content .LSplitPage_Content:nth-child(2)  li:first .actors .time').attr('href');
     } else {
+      var newWall = $('#fb #content #contentWrapper .LSplitPage_Content .LSplitPage_Content:nth-child(2)  li:first .actors .time').attr('href');
       // determine newWall
       if(mostRecentWall != newWall) {
         mostRecentWall = newWall;
@@ -58,10 +58,12 @@
   }
 
   function update() {
-    getStreamPosts(true, function(a) { getWallPosts(true, function(a) { return 0; }); });
-    determineMostRecentStream();
-    determineMostRecentWall();
+    getStreamPosts(true, function(a) { determineMostRecentStream(); getWallPosts(true, function(a) { determineMostRecentWall(); }); });
     window.setTimeout(update, frequency);
+  }
+
+  function getName() {
+    return $('#fb-wall').find('#content #contentWrapper .LSplitPage_Content h1').contents().get(0).textContent;
   }
 
   $(document).ready(function() {
@@ -73,5 +75,7 @@
 <body>
   <div id="fb"></div>
   <div id="fb-wall"></div>
+  <img id="logged_in" src="images/icon19.png" />
+  <img id="logged_out" src="images/icon19_grey.png" />
 </body>
 </html>

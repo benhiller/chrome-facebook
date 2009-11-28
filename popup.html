@@ -5,6 +5,16 @@
     <script>
       var fburl = "http://lite.facebook.com";
 
+      function deserialize(params) {
+        params = params.split('&');
+        var dict = {}
+        for(var i = 0; i < params.length; i++) {
+          var param = params[i].split('=');
+          dict[param[0]] = param[1];
+        }
+        return dict;
+      }
+
       function postStatus(fb) {
         var status = $('#composer-area').val();
         $('#composer-area').val('What\'s on your mind?');
@@ -17,32 +27,60 @@
         $('#pic').append('<img src="'+ src + '" width="40" height="40" title="Post a Status" />');
       }
 
+      function fetchUrl(url, cb) {
+        $('#fb-temp').load(url, null, function() {
+          cb($('#fb-temp'));
+        });
+      }
+
+      function processComment(div) {
+        var comment = $('<li class="comment"></li>');
+        var href = fburl + div.find('.p').attr('href');
+        comment.append('<div class="comment-info"><a href="'+href+'" class="comment-name">'+div.find('.p').text()+'</a>' +
+          '<span class="comment-time">'+div.find('.time').text()+'</span></div>');
+        comment.append('<div class="comment-msg">'+div.find('p').text()+'</div>')
+        return comment;
+      }
+
       function processFeedback(f) {
         var feed = $('<div class="feedback"></div>');
         var likes = $('<div class="likes"></div>');
         var likeLink = f.find('.FN_does_not_like a:first').text();
+        var likeHref = f.find('.FN_does_not_like a:first').attr('href');
         var likeText = f.find('.FN_does_not_like').text();
 
         if(likeLink != '') {
-          likes.append('<a href="#">'+likeLink+'</a>');
+          likes.append('<a href="'+fburl+likeHref+'">'+likeLink+'</a>');
           likes.append(likeText.split(likeLink)[1]);
           feed.append(likes);
         }
         var comments = $('<ul class="comments"></ul>');
         f.find('.FN_all_comments .comment').map(function() {
           if($(this).hasClass('viewAll')) {
-            var viewAll = $('<li class="comment"></li>');
-            viewAll.append('<div class="comment-msg"><a href="#">'+$(this).text()+'</a></div>');
+            var viewAll = $('<li class="comment view-all"></li>');
+            var url = $(this).find('a').attr('href');
+            viewAll.click(function() {
+              fetchUrl(fburl + url, function(comments) {
+                comments.find('#content #contentWrapper .story .FN_ufi_container .UFIView .FN_all_comments .comment').map(function() {
+                  viewAll.before(processComment($(this)));
+                });
+                var current = viewAll;
+                var next = viewAll.next();
+                while(current.length != 0) {
+                  current.replaceWith('');
+                  current = next;
+                  next = current.next();
+                }
+              });
+            });
+            viewAll.append('<div class="comment-msg"><span class="a">'+$(this).text()+'</span></div>');
             comments.append(viewAll);
             return 1;
           }
           if($(this).find('button').length != 0) {
             return 1;
           }
-          var comment = $('<li class="comment"></li>');
-          comment.append('<div class="comment-info"><a href="#" class="comment-name">'+$(this).find('.p').text()+'</a>' +
-            '<span class="comment-time">'+$(this).find('.time').text()+'</span></div>');
-          comment.append('<div class="comment-msg">'+$(this).find('p').text()+'</div>')
+          var comment = processComment($(this));
           comments.append(comment);
           return 1;
         });
@@ -50,16 +88,33 @@
         return feed;
       }
 
-      // TODO
       function showCommentBox() {
         if($(this).parent().parent().find('.feedback .comments .post-comment').length == 1) {
+          $(this).parent().parent().find('.post-comment').toggle();
           return;
         } else {
-          var area = $('<li class="post-comment"><textarea cols="48" rows="3"></textarea><button class="comment-btn">Comment</button></li> ');
-          area.find('.comment-btn').click(function() {
-
+          var link = fburl + $(this).parent().parent().parent().attr('id');
+          var ul = $(this);
+          fetchUrl(link, function(p) {
+            var url = fburl + p.find('.FN_comment_form').attr('action');
+            var params = deserialize(url.split('?')[1]);
+            url = url.split('?')[0];
+            var area = $('<li class="post-comment"><textarea cols="48" rows="3"></textarea><button class="comment-submit">Comment</button></li> ');
+            area.find('.comment-submit').click(function() {
+              var cmt = $(this).parent().find('textarea').val();
+              var li = $('<li class="comment"></li>');
+              console.log(chrome.extension.getBackgroundPage());
+              var name = chrome.extension.getBackgroundPage().getName();
+              var href = chrome.extension.getBackgroundPage().profileURL;
+              li.append('<div class="comment-info"><a href="'+href+'" class="comment-name">'+name+'</a><span class="comment-time">Just now</span></div>');
+              li.append('<div class="comment-msg">'+cmt+'</div>');
+              ul.parent().parent().find('.post-comment').replaceWith(li);
+              params['comment'] = cmt;
+              params['__async__'] = 'true';
+              jQuery.post(url, params);
+            });
+            ul.parent().parent().find('.feedback .comments').append(area);
           });
-          $(this).parent().parent().find('.feedback .comments').append(area);
         }
       }
 
@@ -84,6 +139,10 @@
             msg.append(attchDiv);
             var attchInfo = attch.find('div:nth-child(2)');
             if(attchInfo.html() != null) {
+              var originalHref = attchInfo.find('a.title').attr('href');
+              if(originalHref != undefined && originalHref.indexOf('http') == -1) {
+                attchInfo.find('a.title').attr('href', fburl + originalHref);
+              }
               msg.append('<div class="attch-info">'+attchInfo.html()+'</div>');
             }
           }
@@ -93,31 +152,34 @@
       function processActors(li) {
         if(li.find('.actors .p').length == 1) {
           var name = li.find('.actors .p').text();
-          return [name];
+          var nameHref = fburl + li.find('.actors .p').attr('href');
+          return [[name, nameHref]];
         } else {
           var n1 = li.find('.actors .p:first').text();
+          var h1 = fburl + li.find('.actors .p:first').attr('href');
           var n2 = li.find('.actors .p:nth-child(3)').text();
-          return [n1, n2];
+          var h2 = fburl + li.find('.actors .p:nth-child(3)').attr('href');
+          return [[n1, h1], [n2, h2]];
         }
       }
 
       function handlePost(li) {
         if(li.hasClass('paginatorDummyStory')) {
-          $('#loading').hide();
+          $('#loading').fadeOut();
           return null;
         } else if(li.hasClass('eventStory')) {
           var l = $('<li></li>');
-          l.append('<div class="pic"><img src="images/event.png" /></div>');
+          l.append('<div class="pic"><img class="mini" src="images/event.png" /></div>');
           var post = $('<div class="post"></div>');
           var filler = li.contents().get(2).textContent;
           var eventInfo = li.contents().get(3);
-          console.log(eventInfo);
           post.append(filler);
           post.append('<a href="'+fburl+eventInfo.pathname+'" class="event-link">'+eventInfo.text+'</a>');
           l.append(post);
           return l;
         } else if(li.hasClass('photoStory')) {
           var name = li.find('a:first').text();
+          var nameHref = fburl + li.find('a:first').attr('href');
           var desc;
           if(li.text().indexOf('photo') != -1) {
             desc = ' was tagged in a photo.';
@@ -126,15 +188,16 @@
           }
           var img = li.find('.attachment .attachmentMedia a');
           var l = $('<li></li>');
-          l.append('<div class="pic"><img src="images/photo.png" /></div>');
+          l.append('<div class="pic"><img class="mini" src="images/photo.png" /></div>');
           var post = $('<div class="post"></div>');
-          post.append('<a class="name" href="#">'+name+'</a>'+desc);
+          post.append('<a class="name" href="'+nameHref+'">'+name+'</a>'+desc);
           post.append(processMessageAndAttachment(li));
           l.append(post);
           return l;
         } else {
           var picSrc = li.find('.profilePhoto img').attr('src');
           var time = li.find('.actors .time').text();
+          var permalink = li.find('.actors .time').attr('href');
           var names = processActors(li);
           var msg = processMessageAndAttachment(li);
           var feedback = processFeedback(li.find('.FN_ufi_container .UFIView'));
@@ -144,11 +207,12 @@
           var likeF = like(likeHref);
           var unlikeF = unlike(unlikeHref);
           var l = $('<li></li>');
+          l.attr('id', permalink);
           l.append('<div class="pic"><img src="'+ picSrc +'" /></div>');
           var post = $('<div class="post"></div>');
           var info = $('<div class="info"></div>');
           for(var i = 0; i < names.length; i++) {
-            info.append('<a href="#" class="name">'+names[i]+'</a>');
+            info.append('<a href="'+names[i][1]+'" class="name">'+names[i][0]+'</a>');
             if(i != names.length - 1) {
               info.append(' &#155; ');
             }
@@ -156,7 +220,7 @@
           info.append('<span class="time">'+time+'</span></div>');
           post.append(info);
           post.append(msg);
-          post.append('<div class="actions"><a class="comment-btn">Comment</a> &#183; <a class="like-btn">Like</a></div>');
+          post.append('<div class="actions"><a href="#" class="comment-btn">Comment</a> &#183; <a class="like-btn">Like</a></div>');
           if(post.find('.msg .attch').length != 0) {
             post.find('.actions').css('clear', 'both');
           }
@@ -165,7 +229,7 @@
           } else {
             post.find('.like-btn').toggle(unlikeF, likeF);
           }
-          // post.find('.comment-btn').click(showCommentBox);
+          post.find('.comment-btn').click(showCommentBox);
           post.append(feedback);
           l.append(post);
           return l;
@@ -203,11 +267,18 @@
       }
 
       function renderStreamPosts(fb) {
-        fb.find('#content #home_stream li').map(function() {
-          newStreamPost($(this));
-          return 1;
-        });
-        $('#stream').show();
+        var loggedInCheck = fb.find('.container .headline').text();
+        if(loggedInCheck != null && loggedInCheck.indexOf('The fastest way') == -1) {
+          fb.find('#content #home_stream li').map(function() {
+            newStreamPost($(this));
+            return 1;
+          });
+          $('#stream').show();
+        } else {
+          $('#error').fadeIn();
+          $('#pic').hide();
+          $('#loading').fadeOut();
+        }
       }
 
       function renderWall(fb) {
@@ -215,6 +286,7 @@
           newWallPost($(this));
           return 1;
         });
+        $('#loading').hide();
       }
 
       function hideContents() {
@@ -223,9 +295,11 @@
 
       $(document).ready(function() {
         chrome.browserAction.setBadgeText({text: ""});
-        chrome.extension.getBackgroundPage().getStreamPosts(false, renderStreamPosts);
+        chrome.extension.getBackgroundPage().getStreamPosts(false, function(fb) {
+          renderStreamPosts(fb);
+          chrome.extension.getBackgroundPage().getWallPosts(false, loadProfilePic);
+        });
 
-        chrome.extension.getBackgroundPage().getWallPosts(false, loadProfilePic);
         $('#items li').click(function() {
           if(!$(this).hasClass('selected'))  {
             $('#' + $('#items li.selected').attr('id').replace('-btn', '')).slideUp();
@@ -274,7 +348,7 @@
       <ul id="items">
         <li id="stream-btn" class=" selected"><img src="images/stream.png" title="Live Feed"/></li>
         <li id="wall-btn"><img src="images/incoming.png" title="Wall" /></li>
-        <li id="inbox-btn"><img src="images/inbox.png" title="Inbox" /></li>
+        <!-- <li id="inbox-btn"><img src="images/inbox.png" title="Inbox" /></li> -->
       </ul>
     </div>
     <div id="content">
@@ -283,18 +357,22 @@
       </div>
       <ul id="stream">
       </ul>
-    <ul id="wall">
-    </ul>
-    <ul id="inbox">
-      <li>
+      <ul id="wall">
+      </ul>
+      <!-- <ul id="inbox">
+        <li>
         TODO
-      </li>
-    </ul>
+        </li>
+      </ul> -->
+      <ul id="error">
+        <p>To use the Facebook for Chrome extension, please login to <a href="http://facebook.com">Facebook</a> first.</p>
+      </ul>
     </div>
     <div id="composer">
       <textarea rows="5" cols="49" id="composer-area">What's on your mind?</textarea>
       <button id="composer-submit">Share</button>
       <button id="composer-cancel">Cancel</button>
     </div>
+    <div id="fb-temp"></div>
   </body>
 </html>

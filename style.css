@@ -7,7 +7,7 @@ body {
   font-size: 13px;
 }
 
-a {
+a, span.a {
   text-decoration: none;
   color: #1842B1;
   cursor: pointer;
@@ -57,6 +57,10 @@ button:active {
   margin-left: 14px;
 }
 
+#pic:hover {
+  -webkit-box-shadow: #FFF 0px 0px 10px;
+}
+
 #items {
   margin-top: 0px;
   margin-left: -30px;
@@ -86,12 +90,24 @@ button:active {
   min-height: 500px;
 }
 
+#error {
+  display: none;
+  padding: 10px;
+  margin-top: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: 60px;
+  border: 1px solid #BBC6DA;
+  background: #F5F6FA;
+  -webkit-border-radius: 5px;
+}
+
 #stream, #wall {
   display: none;
   list-style: none;
 }
 
-#wall, #inbox {
+#wall, #inbox, #fb-temp {
   display: none;
 }
 
@@ -104,6 +120,10 @@ button:active {
 
 .pic {
   float: left;
+}
+
+.pic .mini {
+  padding-left: 35px;
 }
 
 .post {
@@ -221,14 +241,14 @@ button:active {
 }
 
 .post-comment {
-  height: 80px;
-  padding-bottom: 50px;
+  height: 78px;
 }
 
 .post-comment textarea {
 }
 
-.comment-btn {
+.comment-submit {
+  margin-right: 8px;
 }
 
 #composer {
