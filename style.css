@@ -86,7 +86,8 @@ button:active {
   min-height: 500px;
 }
 
-#stream {
+#stream, #wall {
+  display: none;
   list-style: none;
 }
 
@@ -96,9 +97,9 @@ button:active {
 
 #stream > li, #wall > li {
   padding-bottom: 5px;
-  min-height: 55px;
   border-bottom: 1px solid #CCC;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+  word-wrap: break-word;
 }
 
 .pic {
@@ -110,7 +111,48 @@ button:active {
   padding-left: 5px;
 }
 
-.name {
+.msg .attch {
+  margin-bottom: -1px;
+  padding-right: 6px;
+  float: left;
+  padding-top: 7px;
+}
+
+.msg .attch img {
+  width: 85px;
+  padding: 2px;
+  margin: 2px;
+  border: 1px solid #CCC;
+}
+
+.msg .attch img:hover {
+  border: 1px solid #888;
+}
+
+.msg .attch-info {
+  font-size: 10px;
+  padding-top: 7px;
+  padding-bottom: 5px;
+}
+
+.msg .attch-info .title {
+  font-weight: bold;
+  text-overflow: ellipsis;
+  text-wrap: none;
+}
+
+.msg .attch-info .caption {
+  color: #888;
+  margin: 0px;
+  margin-top: 2px;
+  margin-bottom: -5px;
+}
+
+.msg .attch-info .text {
+  margin-bottom: -3px;
+}
+
+.name, .event-link {
   font-weight: bold;
   color: #2351CC;
 }
@@ -134,7 +176,7 @@ button:active {
 .likes {
   padding-top: 5px;
   font-size: 11px;
-  background-image: url(like.png);
+  background-image: url(images/like.png);
   background-repeat: no-repeat;
   background-position: 5px 6px;
   padding-left: 23px;
@@ -187,7 +229,6 @@ button:active {
 }
 
 .comment-btn {
-  margin-right: 8px;
 }
 
 #composer {
@@ -224,4 +265,8 @@ button:active {
 
 #composer-submit {
   margin-right: -1px;
+}
+
+.dummy {
+  clear: both;
 }

@@ -1,8 +1,77 @@
 <html>
 <head>
+    <script src="jquery.js"></script>
 <script>
+  var wall;
+  var fb;
+  var frequency = 1000 * 60 * 7; // How frequently do we update? Every 7 minutes
+  var mostRecentStream;
+  var mostRecentWall;
+
+  function getStreamPosts(update, cb) {
+    if($('#fb').find('#content').length == 0 || update) {
+      $('#fb').load('http://lite.facebook.com', null, function() {
+        cb($('#fb'));
+      });
+    } else {
+      cb($('#fb'));
+    }
+  }
+
+  function getWallPosts(update, cb) {
+    if($('#fb-wall').find('#content').length == 0 || update) {
+      wallUrl = 'http://lite.facebook.com' + $('#fb #header #navigation > a:nth-child(2)').attr('href');
+      $('#fb-wall').load(wallUrl, null, function() {
+        cb($('#fb-wall'));
+      });
+    } else {
+      cb($('#fb-wall'));
+    }
+  }
+
+  function determineMostRecentStream() {
+    if(mostRecentStream === undefined) {
+      // determine mostRecentStream
+      mostRecentStream = $('#fb #content #contentWrapper #home_stream li:first .actors .time').attr('href');
+    } else {
+      // determine newStream
+      alert(mostRecentStream);
+      var newStream = $('#fb #content #contentWrapper #home_stream li:first .actors .time').attr('href');
+      alert(newStream);
+      if(mostRecentStream != newStream) {
+        mostRecentStream = newStream;
+        chrome.browserAction.setBadgeText({text: "X" });
+      }
+    }
+  }
+
+  function determineMostRecentWall() {
+    if(mostRecentWall === undefined) {
+      // determine mostRecentWall
+    } else {
+      // determine newWall
+      if(mostRecentWall != newWall) {
+        mostRecentWall = newWall;
+        chrome.browserAction.setBadgeText({text: "X" });
+      }
+    }
+  }
+
+  function update() {
+    getStreamPosts(true, function(a) { getWallPosts(true, function(a) { return 0; }); });
+    determineMostRecentStream();
+    determineMostRecentWall();
+    window.setTimeout(update, frequency);
+  }
+
+  $(document).ready(function() {
+    update();
+  });
+
 </script>
 </head>
 <body>
+  <div id="fb"></div>
+  <div id="fb-wall"></div>
 </body>
 </html>

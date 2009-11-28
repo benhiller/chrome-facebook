@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script src="jquery.js"></script>
     <script>
-      var xhr;
+      var fburl = "http://lite.facebook.com";
 
-      function postStatus() {
+      function postStatus(fb) {
         var status = $('#composer-area').val();
         $('#composer-area').val('What\'s on your mind?');
-        var url = 'http://lite.facebook.com' + $('#fb #content .FN_publisher .LPublisherView .FN_write-view.profileWall .FN_write-form').attr('action');
-        console.log(url);
-        console.log(status);
+        var url = fburl + fb.find('#content .FN_publisher .LPublisherView .FN_write-view.profileWall .FN_write-form').attr('action');
         jQuery.post(url, {"source": "home", "message": status, "__async__": "true" });
       }
 
-      function loadProfilePic() {
-        var src = $('#fb-wall #content .profilePicture').attr('src');
+      function loadProfilePic(wall) {
+        var src = wall.find('#content .profilePicture').attr('src');
         $('#pic').append('<img src="'+ src + '" width="40" height="40" title="Post a Status" />');
       }
 
       function processFeedback(f) {
         var feed = $('<div class="feedback"></div>');
         var likes = $('<div class="likes"></div>');
-        var likeLink = f.find('.FN_does_not_like a').text();
+        var likeLink = f.find('.FN_does_not_like a:first').text();
         var likeText = f.find('.FN_does_not_like').text();
 
         if(likeLink != '') {
@@ -32,6 +30,15 @@
         }
         var comments = $('<ul class="comments"></ul>');
         f.find('.FN_all_comments .comment').map(function() {
+          if($(this).hasClass('viewAll')) {
+            var viewAll = $('<li class="comment"></li>');
+            viewAll.append('<div class="comment-msg"><a href="#">'+$(this).text()+'</a></div>');
+            comments.append(viewAll);
+            return 1;
+          }
+          if($(this).find('button').length != 0) {
+            return 1;
+          }
           var comment = $('<li class="comment"></li>');
           comment.append('<div class="comment-info"><a href="#" class="comment-name">'+$(this).find('.p').text()+'</a>' +
             '<span class="comment-time">'+$(this).find('.time').text()+'</span></div>');
@@ -56,37 +63,129 @@
         }
       }
 
-      function newStreamPost(li) {
+      function processMessageAndAttachment(li) {
+          var msg = $('<div class="msg">'+li.find('.actors + p').text()+'</div>');
+          var attch = li.find('.attachment');
+          if(attch.length != 0) {
+            var attchDiv = $('<div class="attch"></div>');
+            attch.find('.attachmentMedia a').map(function() {
+              if($(this).find('img').attr('src') !== undefined) {
+                var attchItem;
+                if($(this).attr('href').indexOf('http') == -1) {
+                  attchItem = $('<a href="'+fburl + $(this).attr('href')+'"></a>');
+                } else {
+                  attchItem = $('<a href="'+ $(this).attr('href')+'"></a>');
+                }
+                var attchPic = $('<img src="'+$(this).find('img').attr('src')+'" />');
+                attchItem.append(attchPic);
+                attchDiv.append(attchItem);
+              }
+            });
+            msg.append(attchDiv);
+            var attchInfo = attch.find('div:nth-child(2)');
+            if(attchInfo.html() != null) {
+              msg.append('<div class="attch-info">'+attchInfo.html()+'</div>');
+            }
+          }
+          return msg;
+      }
+
+      function processActors(li) {
+        if(li.find('.actors .p').length == 1) {
+          var name = li.find('.actors .p').text();
+          return [name];
+        } else {
+          var n1 = li.find('.actors .p:first').text();
+          var n2 = li.find('.actors .p:nth-child(3)').text();
+          return [n1, n2];
+        }
+      }
+
+      function handlePost(li) {
         if(li.hasClass('paginatorDummyStory')) {
           $('#loading').hide();
-          return;
-        }
-        var picSrc = li.find('.profilePhoto img').attr('src');
-        var name = li.find('.actors .p').text();
-        var time = li.find('.actors .time').text();
-        var msg = li.find('.actors + p').text();
-        var feedback = processFeedback(li.find('.FN_ufi_container .UFIView'));
-        var f = li.find('.FN_ufi_container .meta');
-        var likeHref = 'http://lite.facebook.com' + f.find('.FN_like').attr('href');
-        var unlikeHref = 'http://lite.facebook.com' + f.find('.FN_unlike').attr('href');
-        var likeF = like(likeHref);
-        var unlikeF = unlike(unlikeHref);
-        var l = $('<li></li>');
-        l.append('<div class="pic"><img src="'+ picSrc +'" /></div>');
-        var post = $('<div class="post"></div>');
-        post.append('<div class="info"><a href="#" class="name">'+name+'</a>'+
-                    '<span class="time">'+time+'</span></div>');
-        post.append('<div class="msg">'+msg+'</div>');
-        post.append('<div class="actions"><a class="comment-btn">Comment</a> &#183; <a class="like-btn">Like</a></div>');
-        if(f.find('.FN_unlike').css('display') == 'none') {
-          post.find('.like-btn').toggle(likeF, unlikeF);
+          return null;
+        } else if(li.hasClass('eventStory')) {
+          var l = $('<li></li>');
+          l.append('<div class="pic"><img src="images/event.png" /></div>');
+          var post = $('<div class="post"></div>');
+          var filler = li.contents().get(2).textContent;
+          var eventInfo = li.contents().get(3);
+          console.log(eventInfo);
+          post.append(filler);
+          post.append('<a href="'+fburl+eventInfo.pathname+'" class="event-link">'+eventInfo.text+'</a>');
+          l.append(post);
+          return l;
+        } else if(li.hasClass('photoStory')) {
+          var name = li.find('a:first').text();
+          var desc;
+          if(li.text().indexOf('photo') != -1) {
+            desc = ' was tagged in a photo.';
+          } else {
+            desc = ' was tagged in an album.';
+          }
+          var img = li.find('.attachment .attachmentMedia a');
+          var l = $('<li></li>');
+          l.append('<div class="pic"><img src="images/photo.png" /></div>');
+          var post = $('<div class="post"></div>');
+          post.append('<a class="name" href="#">'+name+'</a>'+desc);
+          post.append(processMessageAndAttachment(li));
+          l.append(post);
+          return l;
         } else {
-          post.find('.like-btn').toggle(unlikeF, likeF);
+          var picSrc = li.find('.profilePhoto img').attr('src');
+          var time = li.find('.actors .time').text();
+          var names = processActors(li);
+          var msg = processMessageAndAttachment(li);
+          var feedback = processFeedback(li.find('.FN_ufi_container .UFIView'));
+          var f = li.find('.FN_ufi_container .meta');
+          var likeHref = fburl + f.find('.FN_like').attr('href');
+          var unlikeHref = fburl + f.find('.FN_unlike').attr('href');
+          var likeF = like(likeHref);
+          var unlikeF = unlike(unlikeHref);
+          var l = $('<li></li>');
+          l.append('<div class="pic"><img src="'+ picSrc +'" /></div>');
+          var post = $('<div class="post"></div>');
+          var info = $('<div class="info"></div>');
+          for(var i = 0; i < names.length; i++) {
+            info.append('<a href="#" class="name">'+names[i]+'</a>');
+            if(i != names.length - 1) {
+              info.append(' &#155; ');
+            }
+          }
+          info.append('<span class="time">'+time+'</span></div>');
+          post.append(info);
+          post.append(msg);
+          post.append('<div class="actions"><a class="comment-btn">Comment</a> &#183; <a class="like-btn">Like</a></div>');
+          if(post.find('.msg .attch').length != 0) {
+            post.find('.actions').css('clear', 'both');
+          }
+          if(f.find('.FN_unlike').css('display') == 'none') {
+            post.find('.like-btn').toggle(likeF, unlikeF);
+          } else {
+            post.find('.like-btn').toggle(unlikeF, likeF);
+          }
+          // post.find('.comment-btn').click(showCommentBox);
+          post.append(feedback);
+          l.append(post);
+          return l;
         }
-        post.find('.comment-btn').click(showCommentBox);
-        post.append(feedback);
-        l.append(post);
-        $('#stream').append(l);
+      }
+
+      function newWallPost(li) {
+        var l = handlePost(li);
+        if(l != null) {
+          l.append('<div class="dummy"></div>');
+          $('#wall').append(l);
+        }
+      }
+
+      function newStreamPost(li) {
+        var l = handlePost(li);
+        if(l != null) {
+          l.append('<div class="dummy"></div>');
+          $('#stream').append(l);
+        }
       }
 
       function like(url) {
@@ -103,32 +202,30 @@
         };
       }
 
-      function getStreamPosts() {
-        $('#fb').load('http://lite.facebook.com', null, function() {
-          if($('#fb #content #home_stream li').length == 0) {
-            $("#error").show();
-          }
-          var wall = 'http://lite.facebook.com' + $('#fb #header #navigation > a:nth-child(2)').attr('href');
-          $('#fb-wall').load(wall, null, function() {
-            $('#fb-wall').hide();
-            loadProfilePic();
-          });
-          $('#fb #content #home_stream li').map(function() {
-            newStreamPost($(this));
-            return 1;
-          });
+      function renderStreamPosts(fb) {
+        fb.find('#content #home_stream li').map(function() {
+          newStreamPost($(this));
+          return 1;
         });
-        $('#fb').hide();
+        $('#stream').show();
       }
 
-      function handlePosts() {
-        var doc = xhr.responseXML;
-        //console.log(xhr.responseText);
+      function renderWall(fb) {
+        fb.find('#content #contentWrapper .LSplitPage_Content .LStreamView:nth-child(4) li').map(function() {
+          newWallPost($(this));
+          return 1;
+        });
+      }
+
+      function hideContents() {
+        $('#stream, #wall, #inbox').hide();
       }
 
       $(document).ready(function() {
-        getStreamPosts();
+        chrome.browserAction.setBadgeText({text: ""});
+        chrome.extension.getBackgroundPage().getStreamPosts(false, renderStreamPosts);
 
+        chrome.extension.getBackgroundPage().getWallPosts(false, loadProfilePic);
         $('#items li').click(function() {
           if(!$(this).hasClass('selected'))  {
             $('#' + $('#items li.selected').attr('id').replace('-btn', '')).slideUp();
@@ -151,7 +248,7 @@
         });
 
         $('#composer-submit').click(function() {
-          postStatus();
+          chrome.extension.getBackgroundPage().getStreamPosts(false, postStatus);
           $("#composer").fadeOut();
         });
 
@@ -159,6 +256,13 @@
           $("#composer").fadeOut();
           $('#composer-area').val('What\'s on your mind?');
         });
+
+        $('a').live('click', function() {
+          if($(this).attr('href') != '' && $(this).attr('href') != '#') {
+            chrome.tabs.create({url: $(this).attr('href')});
+          }
+        });
+        chrome.extension.getBackgroundPage().getWallPosts(false, renderWall);
       });
     </script>
     <link rel="stylesheet" type="text/css" href="style.css" />
@@ -168,19 +272,18 @@
       <div id="pic">
       </div>
       <ul id="items">
-        <li id="stream-btn" class=" selected"><img src="streambw.png" title="Live Feed"/></li>
-        <li id="wall-btn"><img src="incomingbw.png" title="Wall" /></li>
-        <li id="inbox-btn"><img src="inboxbw.png" title="Inbox" /></li>
+        <li id="stream-btn" class=" selected"><img src="images/stream.png" title="Live Feed"/></li>
+        <li id="wall-btn"><img src="images/incoming.png" title="Wall" /></li>
+        <li id="inbox-btn"><img src="images/inbox.png" title="Inbox" /></li>
       </ul>
     </div>
     <div id="content">
       <div id="loading">
-        <img src="loading.gif" />
+        <img src="images/loading.gif" />
       </div>
       <ul id="stream">
       </ul>
     <ul id="wall">
-      TODO, should be similar to stream
     </ul>
     <ul id="inbox">
       <li>
@@ -192,10 +295,6 @@
       <textarea rows="5" cols="49" id="composer-area">What's on your mind?</textarea>
       <button id="composer-submit">Share</button>
       <button id="composer-cancel">Cancel</button>
-    </div>
-    <div id="fb">
-    </div>
-    <div id="fb-wall">
     </div>
   </body>
 </html>
