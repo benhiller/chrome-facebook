@@ -220,7 +220,7 @@
           info.append('<span class="time">'+time+'</span></div>');
           post.append(info);
           post.append(msg);
-          post.append('<div class="actions"><a href="#" class="comment-btn">Comment</a> &#183; <a class="like-btn">Like</a></div>');
+          post.append('<div class="actions"><span class="a comment-btn">Comment</span> &#183; <a class="like-btn">Like</a></div>');
           if(post.find('.msg .attch').length != 0) {
             post.find('.actions').css('clear', 'both');
           }
@@ -275,9 +275,9 @@
           });
           $('#stream').show();
         } else {
-          $('#error').fadeIn();
+          $('#loading').hide();
+          $('#error').show();
           $('#pic').hide();
-          $('#loading').fadeOut();
         }
       }
 

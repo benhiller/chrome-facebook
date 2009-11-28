@@ -1,5 +1,8 @@
 body {
   width: 450px;
+  height: 500px;
+  max-height: 500px;
+  min-height: 500px;
   margin-left: -10px;
   padding-bottom: 0px;
   overflow-x: hidden;
