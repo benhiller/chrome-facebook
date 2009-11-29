@@ -1,5 +1,7 @@
 body {
   width: 450px;
+  min-width: 450px;
+  max-width: 450px;
   height: 500px;
   max-height: 500px;
   min-height: 500px;
