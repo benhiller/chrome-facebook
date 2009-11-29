@@ -218,6 +218,28 @@
           post.append(feedback);
           l.append(post);
           return l;
+        } else if(li.hasClass('videoStory')) {
+          var name = li.find('a:first').text();
+          var nameHref;
+          if(name.length != 1) {
+            nameHref = fburl + li.find('a:first').attr('href');
+          } else {
+            name = li.contents().get(2).textContent;
+          }
+          var desc = ' was tagged in a video.';
+          var img = li.find('.attachment .attachmentMedia a');
+          var l = $('<li></li>');
+          l.append('<div class="pic"><img class="mini" src="images/video.png" /></div>');
+          var post = $('<div class="post"></div>');
+          if(nameHref != undefined) {
+            post.append('<a class="name" href="'+nameHref+'">'+name+'</a>'+desc);
+          } else {
+            post.append(name);
+          }
+          post.append(processMessageAndAttachment(li));
+          l.append(post);
+          return l;
+
         } else if(li.hasClass('eventStory')) {
           var l = $('<li></li>');
           l.append('<div class="pic"><img class="mini" src="images/event.png" /></div>');
@@ -428,5 +450,16 @@
       <button id="composer-cancel">Cancel</button>
     </div>
     <div id="fb-temp"></div>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+      var pageTracker = _gat._getTracker("UA-85731-3");
+      pageTracker._setDomainName("none");
+      pageTracker._setAllowLinker(true);
+      pageTracker._trackPageview();
+    } catch(err) {}</script>
   </body>
 </html>
