@@ -349,7 +349,10 @@
         chrome.browserAction.setBadgeText({text: ""});
         chrome.extension.getBackgroundPage().getStreamPosts(false, function(fb) {
           renderStreamPosts(fb);
-          chrome.extension.getBackgroundPage().getWallPosts(false, loadProfilePic);
+          chrome.extension.getBackgroundPage().getWallPosts(false, function(fb) {
+            loadProfilePic(fb);
+            renderWall(fb);
+          });
         });
 
         $('#items li').click(function() {
@@ -388,7 +391,6 @@
             chrome.tabs.create({url: $(this).attr('href')});
           }
         });
-        chrome.extension.getBackgroundPage().getWallPosts(false, renderWall);
       });
     </script>
     <link rel="stylesheet" type="text/css" href="style.css" />
