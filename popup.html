@@ -351,6 +351,7 @@
       function renderStreamPosts(fb) {
         var loggedInCheck = fb.find('.container .headline').text();
         if(loggedInCheck != null && loggedInCheck.indexOf('The fastest way') == -1) {
+          chrome.browserAction.setIcon({"path": "/images/icon19.png"});
           fb.find('#content #home_stream li').map(function() {
             newStreamPost($(this));
             return 1;
@@ -359,6 +360,7 @@
         } else {
           $('#loading').hide();
           $('#error').show();
+          chrome.browserAction.setIcon({"path": "/images/icon-loggedout.png"});
           $('#pic').hide();
         }
       }
