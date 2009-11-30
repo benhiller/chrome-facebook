@@ -325,6 +325,14 @@
         }
       }
 
+      function newNotification(li) {
+        var l = handlePost(li);
+        if(l != null) {
+          l.append('<div class="dummy"></div>');
+          $('#notifications').append(l);
+        }
+      }
+
       function like(url) {
         return function() {
           $(this).text('Unlike');
@@ -360,6 +368,14 @@
           return 1;
         });
         $('#loading').hide();
+      }
+
+      function renderNotifications(fb) {
+        fb.find('#content #contentWrapper .LSplitPage_Content .LStreamView li').map(function() {
+          newNotification($(this));
+          return 1;
+        });
+        $('#loading').fadeOut();
       }
 
       function hideContents() {
@@ -412,6 +428,13 @@
             chrome.tabs.create({url: $(this).attr('href')});
           }
         });
+
+        $('#notifications-btn').click(function() {
+          $('#loading').fadeIn();
+          chrome.extension.getBackgroundPage().loadNotifications(function(notifs) {
+            renderNotifications(notifs);
+          });
+        });
       });
     </script>
     <link rel="stylesheet" type="text/css" href="style.css" />
@@ -423,6 +446,7 @@
       <ul id="items">
         <li id="stream-btn" class=" selected"><img src="images/stream.png" title="Live Feed"/></li>
         <li id="wall-btn"><img src="images/incoming.png" title="Wall" /></li>
+        <li id="notifications-btn"><img src="images/notifications.png" title="Notifications" /></li>
         <!-- <li id="inbox-btn"><img src="images/inbox.png" title="Inbox" /></li> -->
       </ul>
     </div>
@@ -433,6 +457,8 @@
       <ul id="stream">
       </ul>
       <ul id="wall">
+      </ul>
+      <ul id="notifications">
       </ul>
       <!-- <ul id="inbox">
         <li>

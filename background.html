@@ -40,8 +40,14 @@
     }
   }
 
+  function loadNotifications(cb) {
+    $('#fb-notif').load('http://lite.facebook.com/notifications/', null, function() {
+      cb($('#fb-notif'));
+    });
+  }
+
   function markNotificationsRead() {
-    $('#fb').load('http://lite.facebook.com/notifications/', null, function() {});
+    loadNotifications(function() {});
     chrome.browserAction.setBadgeText({text: '' });
   }
 

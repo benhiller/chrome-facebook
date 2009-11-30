@@ -107,7 +107,7 @@ button:active {
   -webkit-border-radius: 5px;
 }
 
-#stream, #wall {
+#stream, #wall, #notifications {
   display: none;
   list-style: none;
 }
@@ -116,7 +116,7 @@ button:active {
   display: none;
 }
 
-#stream > li, #wall > li {
+#stream > li, #wall > li, #notifications > li {
   padding-bottom: 5px;
   border-bottom: 1px solid #CCC;
   margin-bottom: 6px;
