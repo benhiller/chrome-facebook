@@ -5,7 +5,7 @@
   var wall;
   var profileURL;
   var fb;
-  var frequency = 1000 * 60 * 7; // How frequently do we update? Every 7 minutes
+  var frequency = 1000 * 60 * 10; // How frequently do we update? Every 10 minutes
   var mostRecentStream;
   var mostRecentWall;
 
@@ -30,35 +30,26 @@
     }
   }
 
-  function determineMostRecentStream() {
-    if(mostRecentStream === undefined) {
-      // determine mostRecentStream
-      mostRecentStream = $('#fb #content #contentWrapper #home_stream li:first .actors .time').attr('href');
+  function determineNotifications() {
+    var notif = $('#fb #content #contentWrapper .LSplitPage_Content h1 a:first').text()
+    if(notif.split('(').length > 1) {
+      var num = notif.split('(')[1].split(')')[0];
+      chrome.browserAction.setBadgeText({text: num });
     } else {
-      // determine newStream
-      var newStream = $('#fb #content #contentWrapper #home_stream li:first .actors .time').attr('href');
-      if(mostRecentStream != newStream) {
-        mostRecentStream = newStream;
-        chrome.browserAction.setBadgeText({text: "X" });
-      }
+      chrome.browserAction.setBadgeText({text: '' });
     }
   }
 
-  function determineMostRecentWall() {
-    if(mostRecentWall === undefined) {
-      mostRecentWall = $('#fb #content #contentWrapper .LSplitPage_Content .LSplitPage_Content:nth-child(2)  li:first .actors .time').attr('href');
-    } else {
-      var newWall = $('#fb #content #contentWrapper .LSplitPage_Content .LSplitPage_Content:nth-child(2)  li:first .actors .time').attr('href');
-      // determine newWall
-      if(mostRecentWall != newWall) {
-        mostRecentWall = newWall;
-        chrome.browserAction.setBadgeText({text: "X" });
-      }
-    }
+  function markNotificationsRead() {
+    $('#fb').load('http://lite.facebook.com/notifications/', null, function() {});
+    chrome.browserAction.setBadgeText({text: '' });
   }
 
   function update() {
-    getStreamPosts(true, function(a) { determineMostRecentStream(); getWallPosts(true, function(a) { determineMostRecentWall(); }); });
+    getStreamPosts(true, function(a) {
+      determineNotifications();
+      getWallPosts(true, function(a) {});
+    });
     window.setTimeout(update, frequency);
   }
 
@@ -75,6 +66,7 @@
 <body>
   <div id="fb"></div>
   <div id="fb-wall"></div>
+  <div id="fb-notif"></div>
   <img id="logged_in" src="images/icon19.png" />
   <img id="logged_out" src="images/icon19_grey.png" />
 </body>

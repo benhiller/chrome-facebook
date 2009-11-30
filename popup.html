@@ -289,7 +289,6 @@
           var likeF = like(likeHref);
           var unlikeF = unlike(unlikeHref);
           var l = $('<li></li>');
-          l.attr('id', permalink);
           l.append('<div class="pic"><img src="'+ picSrc +'" /></div>');
           var post = $('<div class="post"></div>');
           var info = $('<div class="info"></div>');
@@ -368,7 +367,7 @@
       }
 
       $(document).ready(function() {
-        chrome.browserAction.setBadgeText({text: ""});
+        chrome.extension.getBackgroundPage().markNotificationsRead();
         chrome.extension.getBackgroundPage().getStreamPosts(false, function(fb) {
           renderStreamPosts(fb);
           chrome.extension.getBackgroundPage().getWallPosts(false, function(fb) {
