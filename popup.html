@@ -4,6 +4,7 @@
     <script src="jquery.js"></script>
     <script>
       var fburl = "http://lite.facebook.com";
+      var notificationsLoad = false;
 
       function deserialize(params) {
         params = params.split('&');
@@ -430,10 +431,13 @@
         });
 
         $('#notifications-btn').click(function() {
-          $('#loading').fadeIn();
-          chrome.extension.getBackgroundPage().loadNotifications(function(notifs) {
-            renderNotifications(notifs);
-          });
+          if(!notificationsLoad) {
+            $('#loading').fadeIn();
+            chrome.extension.getBackgroundPage().loadNotifications(function(notifs) {
+              renderNotifications(notifs);
+            });
+            notificationsLoad = true;
+          }
         });
       });
     </script>
