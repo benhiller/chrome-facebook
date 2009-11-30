@@ -5,32 +5,40 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-	<title>benhiller/chrome-facebook @ GitHub</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+	<title>Facebook for Google Chrome</title>
 
 	<style type="text/css">
 		body {
   		margin-top: 1.0em;
-  		background-color: #982555;
+  		background-color: #fff;
 		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
+  		color: #000000;
     }
     #container {
       margin: 0 auto;
       width: 700px;
     }
-		h1 { font-size: 3.8em; color: #67daaa; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
+    .fb { margin-left: -10px; margin-right: 4px; letter-spacing: -2px; color: #395590; font-size: 1.2em; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; }
+		h1 { font-size: 2.4em; color: #395590; margin-bottom: 3px; }
+    h1 img { margin-bottom: -2px; }
+		h1 .small { font-weight: normal; font-size: 0.55em; color: #000; }
+		h1 .small {  }
 		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #67daaa; }
-    h3 { text-align: center; color: #67daaa; }
-    a { color: #67daaa; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+		h2 { font-size: 1.5em; color: #395590; }
+    h3 { text-align: center; color: #395590; }
+    a { color: #395590; }
+    a img { border: 0px; }
+    .description { text-align: justify; padding-right: 20px; border-right: 1px solid #000; width: 350px; float: left; font-size: 1.2em; margin-bottom: 30px; }
+    .description img { border: 1px solid #DDD; padding: 3px;   clip:rect(0px, 1500px, 145px, 0px); position: absolute;}
+    .description img:hover { border-color: #888; }
+    .install { font-size: 1.2em; width: 300px; float: right; }
     .download { float: right; }
 		pre { background: #000; color: #fff; padding: 15px;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
+    .footer { clear: both; text-align:center; padding-top:120px; font-style: italic; }
 	</style>
-
 </head>
 
 <body>
@@ -38,43 +46,40 @@
 
   <div id="container">
 
-    <div class="download">
-      <a href="http://github.com/benhiller/chrome-facebook/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/benhiller/chrome-facebook/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
 
-    <h1><a href="http://github.com/benhiller/chrome-facebook">chrome-facebook</a>
-      <span class="small">by <a href="http://github.com/benhiller">benhiller</a></span></h1>
-
+    <h1><a href="http://github.com/benhiller/chrome-facebook"><img src="icon48.png" /> <span class="fb">acebook</span> for Chrome</a>
+      <span class="small">by <a href="http://benhiller.github.com">benhiller</a></span></h1>
+    <div class="content">
     <div class="description">
-      An extension for Chrome which lets you read your news feed and wall.
+      <h2>Description</h2>
+      This extension lets you view your Facebook news feed, wall and notification all in a Chrome browser action. You can also post status updates by clicking on your profile picture. It looks like <a href="screenshot.png" rel="facebox">this</a>.
     </div>
-
-    <h2>Authors</h2>
-<p>Ben Hiller (benhiller@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Ben Hiller (benhiller@gmail.com)<br/>      </p>
-
-
-    <h2>Download</h2>
+    <div class="install">
+    <h2>Install</h2>
     <p>
-      You can download this project in either
-      <a href="http://github.com/benhiller/chrome-facebook/zipball/master">zip</a> or
-      <a href="http://github.com/benhiller/chrome-facebook/tarball/master">tar</a> formats.
+      You can install the extension in Chrome by clicking <a href="http://cloud.github.com/downloads/benhiller/chrome-facebook/chrome-facebook-1-1.crx">here</a>.</p<p>It works correctly on Mac, seems to have issues on Linux and has not been tested on Windows (though most of the people using it are on Windows, so hopefully it works there).</p>
     </p>
+    </div>
+    </div>
+    <div class="footer">
     <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
       by running:
       <pre>$ git clone git://github.com/benhiller/chrome-facebook</pre>
     </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/benhiller/chrome-facebook">benhiller/chrome-facebook</a>
+      Get the source code on GitHub: <a href="http://github.com/benhiller/chrome-facebook">benhiller/chrome-facebook</a>
     </div>
 
   </div>
 
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-85731-13");
+pageTracker._trackPageview();
+} catch(err) {}</script>
 
 </body>
 </html>
