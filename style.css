@@ -1,3 +1,8 @@
+html {
+  overflow: hidden;
+  margin-right: -8px;
+}
+
 body {
   width: 450px;
   min-width: 450px;
@@ -6,7 +11,7 @@ body {
   max-height: 500px;
   min-height: 500px;
   margin-left: -10px;
-  padding-bottom: 0px;
+  margin-top: 0px;
   overflow-x: hidden;
   font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
   font-size: 13px;
@@ -51,7 +56,7 @@ button:active {
   height: 1000px;
   position: fixed;
   width: 50px;
-  margin-top: 5px;
+  top: 0px;
 }
 
 #pic {
@@ -59,7 +64,12 @@ button:active {
   height: 40px;
   width: 40px;
   margin-bottom: 5px;
-  margin-left: 14px;
+  -webkit-border-radius: 5px;
+  margin-left: 12px;
+}
+
+#pic img {
+  -webkit-border-radius: 5px;
 }
 
 #pic:hover {
@@ -88,10 +98,9 @@ button:active {
 #content {
   width: 395px;
   background-color: #fff;
-  padding-top: 1px;
   margin-left: 40px;
   padding-left: 0px;
-  margin-top: -16px;
+  margin-top: -13px;
   min-height: 500px;
 }
 
@@ -108,6 +117,7 @@ button:active {
 }
 
 #stream, #wall, #notifications {
+  padding-right: 5px;
   display: none;
   list-style: none;
 }
@@ -144,7 +154,7 @@ button:active {
 }
 
 .msg .attch img {
-  width: 85px;
+  width: 84px;
   padding: 2px;
   margin: 2px;
   border: 1px solid #CCC;
@@ -246,10 +256,11 @@ button:active {
 }
 
 .post-comment {
-  height: 78px;
+  height: 85px;
 }
 
 .post-comment textarea {
+  width: 270px;
 }
 
 .comment-submit {
@@ -259,9 +270,9 @@ button:active {
 #composer {
   display: none;
   position: fixed;
-  top: 25px;
+  top: 15px;
   left: 70px;
-  width: 335px;
+  width: 330px;
   z-index: 99;
   padding: 10px;
   background-color: #fff;
@@ -272,6 +283,7 @@ button:active {
 
 #composer textarea {
   font-size: 13px;
+  width: 325px;
 }
 
 #composer button {

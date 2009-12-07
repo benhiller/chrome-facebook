@@ -100,7 +100,7 @@
             var url = fburl + p.find('.FN_comment_form').attr('action');
             var params = deserialize(url.split('?')[1]);
             url = url.split('?')[0];
-            var area = $('<li class="post-comment"><textarea cols="48" rows="3"></textarea><button class="comment-submit">Comment</button></li> ');
+            var area = $('<li class="post-comment"><textarea rows="3"></textarea><button class="comment-submit">Comment</button></li> ');
             area.find('.comment-submit').click(function() {
               var cmt = $(this).parent().find('textarea').val();
               var li = $('<li class="comment"></li>');
@@ -112,6 +112,7 @@
               params['comment'] = cmt;
               params['__async__'] = 'true';
               jQuery.post(url, params);
+              chrome.extensions.getBackgroundPage().update();
             });
             ul.parent().parent().find('.feedback .comments').append(area);
           });
@@ -290,6 +291,7 @@
           var likeF = like(likeHref);
           var unlikeF = unlike(unlikeHref);
           var l = $('<li></li>');
+          l.attr('id', permalink);
           l.append('<div class="pic"><img src="'+ picSrc +'" /></div>');
           var post = $('<div class="post"></div>');
           var info = $('<div class="info"></div>');
