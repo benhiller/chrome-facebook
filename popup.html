@@ -112,6 +112,7 @@
               params['comment'] = cmt;
               params['__async__'] = 'true';
               jQuery.post(url, params);
+              chrome.extensions.getBackgroundPage().update();
             });
             ul.parent().parent().find('.feedback .comments').append(area);
           });
@@ -290,6 +291,7 @@
           var likeF = like(likeHref);
           var unlikeF = unlike(unlikeHref);
           var l = $('<li></li>');
+          l.attr('id', permalink);
           l.append('<div class="pic"><img src="'+ picSrc +'" /></div>');
           var post = $('<div class="post"></div>');
           var info = $('<div class="info"></div>');

@@ -12,6 +12,10 @@
   function getStreamPosts(update, cb) {
     if($('#fb').find('#content').length == 0 || update) {
       $('#fb').load('http://lite.facebook.com', null, function() {
+        var loggedInCheck = $('#fb').find('.container .headline').text();
+        if(loggedInCheck != null && loggedInCheck.indexOf('The fastest way') != -1) {
+          chrome.browserAction.setIcon({"path": "/images/icon-loggedout.png"});
+        }
         cb($('#fb'));
       });
     } else {
