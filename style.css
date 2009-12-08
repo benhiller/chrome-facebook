@@ -4,6 +4,7 @@ html {
 }
 
 body {
+  color: #000;
   width: 450px;
   min-width: 450px;
   max-width: 450px;
