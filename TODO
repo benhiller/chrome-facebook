@@ -5,9 +5,12 @@ Bugs
 
 Future
 ------------
+* Use facebook's notification channels for real-time notifications.
 * Alternatively, make similar extension for Twitter
+  - Also, make it support Bluebird themes
 * Inbox
 * View anyone's wall -> this would require navigation as well
 * Events
 * Photos
 * Info
+
