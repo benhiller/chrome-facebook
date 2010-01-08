@@ -17,5 +17,4 @@
   "permissions": [
     "tabs", "http://*.facebook.com/"
   ],
-  "update_url": "http://github.com/benhiller/chrome-facebook/raw/master/updates.xml"
 }
