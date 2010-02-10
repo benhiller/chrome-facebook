@@ -26,16 +26,20 @@ a, span.a {
 
 button {
   cursor: pointer;
-  border: 1px solid #999999;
   font-weight: bold;
   font-size: 13px;
-  -webkit-box-shadow: #CCC 0px 1px 1px;
-  background: -webkit-gradient(linear, left bottom, left top, from(#E4E5E5), to(#F6F6F6));
+  height: 27px;
+  margin-top: 1px;
+  color: #FFF;
+  -webkit-box-shadow: #AAA 0px 1px 1px;
+  border: 1px solid #29437E;
+  border-bottom: 1px solid #18356D;
+  background: -webkit-gradient(linear, left bottom, left top, from(#647BAD),  to(#8A9CC2));
   float: right;
 }
 
 button:active {
-  background: -webkit-gradient(linear, left bottom, left top, from(#DDD), to(#DDD));
+  background: -webkit-gradient(linear, left bottom, left top, from(#8A9CC2), to(#647BAD));
 }
 
 ::-webkit-scrollbar {
@@ -52,29 +56,31 @@ button:active {
 }
 
 #sidebar {
-  background: -webkit-gradient(linear, left bottom, right bottom, from(#272727), to(#131313));
+  background: -webkit-gradient(linear, left bottom, right bottom, from(#DDDDDD), to(#CECECE));
+  border-right: 1px solid #BEBEBE;
   padding: 10px;
+  padding-top: 4px;
+  padding-left: 5px;
+  padding-right: 14px;
   height: 1000px;
   position: fixed;
-  width: 50px;
+  width: 54px;
   top: 0px;
 }
 
 #pic {
-  -webkit-box-shadow: #FFF 0px 0px 5px;
-  height: 40px;
-  width: 40px;
-  margin-bottom: 5px;
-  -webkit-border-radius: 5px;
-  margin-left: 12px;
+  height: 49px;
+  width: 49px;
+  margin-bottom: 12px;
+  margin-left: 9px;
 }
 
 #pic img {
-  -webkit-border-radius: 5px;
-}
-
-#pic:hover {
-  -webkit-box-shadow: #FFF 0px 0px 10px;
+  height: 49px;
+  width: 49px;
+  -webkit-border-radius: 3px;
+  border: 3px solid #FFF;
+  -webkit-box-shadow: 1px 1px 1px #BEBEBE;
 }
 
 #items {
@@ -86,14 +92,18 @@ button:active {
 
 #items li {
   padding-top: 5px;
+  padding-bottom: 2px;
+  margin-left: -2px;
   padding-left: 7px;
+  height: 53px;
 }
 
 #items li.selected {
   background-color: #fff;
-  background: -webkit-gradient(linear, left bottom, right bottom, from(#ccc), to(#fff));
-  -webkit-border-top-left-radius: 5px;
-  -webkit-border-bottom-left-radius: 5px;
+  padding-right: 54px;
+  -webkit-box-shadow: -1px 1px 1px #BEBEBE;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
 }
 
 #content {
@@ -129,7 +139,7 @@ button:active {
 
 #stream > li, #wall > li, #notifications > li {
   padding-bottom: 5px;
-  border-bottom: 1px solid #CCC;
+  border-bottom: 1px solid #EEE;
   margin-bottom: 6px;
   word-wrap: break-word;
 }
@@ -194,7 +204,6 @@ button:active {
 }
 
 .time {
-  float: right;
   color: #888;
   font-size: 11px;
 }
@@ -264,27 +273,31 @@ button:active {
   width: 270px;
 }
 
-.comment-submit {
-  margin-right: 8px;
-}
-
 #composer {
-  display: none;
-  position: fixed;
-  top: 15px;
-  left: 70px;
-  width: 330px;
+  width: 333px;
+  height: 30px;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border: 1px solid #CBCBCB;
+  background-color: #F2F2F2;
   z-index: 99;
-  padding: 10px;
-  background-color: #fff;
-  -webkit-border-radius: 5px;
-  -webkit-box-shadow: #000 0px 0px 15px;
-  border: 1px solid #888;
+  margin-left: 40px;
+  margin-top: 20px;
 }
 
 #composer textarea {
+  resize: none;
   font-size: 13px;
-  width: 325px;
+  width: 257px;
+  height: 19px;
+  padding: 2px;
+  padding-top: 5px;
+  border: 1px solid #CBCBCB;
+  color: #9C9C9C;
+  padding-left: 10px;
+  margin: 0px;
 }
 
 #composer button {
@@ -299,10 +312,6 @@ button:active {
   position: fixed;
   top: 225px;
   left: 250px;
-}
-
-#composer-submit {
-  margin-right: -1px;
 }
 
 .dummy {

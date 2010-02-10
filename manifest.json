@@ -16,5 +16,5 @@
   },
   "permissions": [
     "tabs", "http://*.facebook.com/"
-  ],
+  ]
 }

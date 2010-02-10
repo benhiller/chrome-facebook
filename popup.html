@@ -164,8 +164,8 @@
         }
       }
 
-      function processActions(li, post, likeF, unlikeF) {
-        var actions = $('<div class="actions"><span class="a comment-btn">Comment</span> &#183; <a class="like-btn">Like</a></div>');
+      function processActions(li, post, likeF, unlikeF, time) {
+        var actions = $('<div class="actions"><span class="time">' + time + '</span> &#183; <span class="a comment-btn">Comment</span> &#183; <a class="like-btn">Like</a></div>');
         if(post.find('.msg .attch').length != 0) {
           actions.css('clear', 'both');
         }
@@ -215,7 +215,7 @@
           var likeF = like(likeHref);
           var unlikeF = unlike(unlikeHref);
           post.append(msg);
-          var actions = processActions(li, post, likeF, unlikeF);
+          var actions = processActions(li, post, likeF, unlikeF, '');
           post.append(actions);
           post.append(feedback);
           l.append(post);
@@ -301,10 +301,9 @@
               info.append(' &#155; ');
             }
           }
-          info.append('<span class="time">'+time+'</span></div>');
           post.append(info);
           post.append(msg);
-          var actions = processActions(li, post, likeF, unlikeF);
+          var actions = processActions(li, post, likeF, unlikeF, time);
           post.append(actions);
           post.append(feedback);
           l.append(post);
@@ -406,15 +405,8 @@
           }
         });
 
-        $('#pic').click(function() {
-          if($('#composer').css('display') == 'none') {
-            $("#composer").fadeIn();
-          } else {
-            $("#composer").fadeOut();
-          }
-        });
-
         $('#composer-area').focus(function() {
+          $(this).css('color', '#000');
           $(this).val('');
         });
 
@@ -452,13 +444,18 @@
       <div id="pic">
       </div>
       <ul id="items">
-        <li id="stream-btn" class=" selected"><img src="images/stream.png" title="Live Feed"/></li>
+        <li id="stream-btn" class="selected"><img src="images/stream.png" title="Live Feed"/></li>
         <li id="wall-btn"><img src="images/incoming.png" title="Wall" /></li>
         <li id="notifications-btn"><img src="images/notifications.png" title="Notifications" /></li>
+        <!-- <li id="refresh-btn"><img src="images/refresh.png" title="Refresh" /></li> -->
         <!-- <li id="inbox-btn"><img src="images/inbox.png" title="Inbox" /></li> -->
       </ul>
     </div>
     <div id="content">
+      <div id="composer">
+        <textarea rows="1" cols="40" id="composer-area">What's on your mind?</textarea>
+        <button id="composer-submit">Share</button>
+      </div>
       <div id="loading">
         <img src="images/loading.gif" />
       </div>
@@ -477,12 +474,7 @@
         <p>To use the Facebook for Chrome extension, please login to <a href="http://facebook.com">Facebook</a> first.</p>
       </ul>
     </div>
-    <div id="composer">
-      <textarea rows="5" cols="49" id="composer-area">What's on your mind?</textarea>
-      <button id="composer-submit">Share</button>
-      <button id="composer-cancel">Cancel</button>
-    </div>
-    <div id="fb-temp"></div>
+        <div id="fb-temp"></div>
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
