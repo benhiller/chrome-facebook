@@ -357,7 +357,7 @@
         };
       }
 
-      function renderStreamPosts(fb) {
+      function renderStreamPosts(fb, showStream) {
         var loggedInCheck = fb.find('.container .headline').text();
         if(loggedInCheck != null && loggedInCheck.indexOf('The fastest way') == -1) {
           chrome.browserAction.setIcon({"path": "/images/icon19.png"});
@@ -367,7 +367,9 @@
             newStreamPost($(this));
             return 1;
           });
-          $('#stream').show();
+          if(showStream) {
+            $('#stream').show();
+          }
         } else {
           $('#loading').hide();
           $('#error').show();
@@ -411,7 +413,7 @@
       $(document).ready(function() {
         chrome.extension.getBackgroundPage().markNotificationsRead();
         chrome.extension.getBackgroundPage().getStreamPosts(false, function(fb) {
-          renderStreamPosts(fb);
+          renderStreamPosts(fb, true);
           chrome.extension.getBackgroundPage().getWallPosts(false, function(fb) {
             loadProfilePic(fb);
             renderWall(fb);
@@ -445,9 +447,9 @@
             }
           } else {
             // In this case, user is trying to refresh
-            chrome.extension.getBackgroundPage().getStreamPosts(false, function(fb) {
-              renderStreamPosts(fb);
-                chrome.extension.getBackgroundPage().getWallPosts(false, function(fb) {
+            chrome.extension.getBackgroundPage().getStreamPosts(true, function(fb) {
+              renderStreamPosts(fb, false);
+                chrome.extension.getBackgroundPage().getWallPosts(true, function(fb) {
                 renderWall(fb);
               });
             });
