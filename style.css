@@ -133,7 +133,7 @@ button:active {
   list-style: none;
 }
 
-#wall, #inbox, #fb-temp {
+#notifications, #wall, #inbox, #fb-temp {
   display: none;
 }
 
@@ -316,4 +316,16 @@ button:active {
 
 .dummy {
   clear: both;
+}
+
+.refresh-btn {
+  position: relative;
+  top: 12px;
+  left: 18px;
+  display: none;
+}
+
+.button {
+  position: absolute;
+  z-index: 1000;
 }
