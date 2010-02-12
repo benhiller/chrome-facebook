@@ -1,50 +1,50 @@
 {
   "extName": {
-    "message": "Facebook pour Google Chrome",
+    "message": "Facebook para Google Chrome",
     "description": "Extension name."
   },
   "extDesc": {
-    "message": "Extension qui vous permet de lire votre Facebook fil de nouvelles et le mur. Vous pouvez également publier des mises à jour d'état.",
+    "message": "De extensión que le permite leer el feed de noticias de Facebook y la pared. También puede publicar actualizaciones de estado.",
     "description": "Description of extension."
   },
   "statusFiller": {
-    "message": "Exprimez-vous",
+    "message": "¿Qué estás pensando?",
     "description": "Text inviting a user to post a status."
   },
   "comment": {
-    "message": "Commenter",
+    "message": "Comentar",
     "description": "Comment verb."
   },
   "share": {
-    "message": "Partager",
+    "message": "Compartir",
     "description": "Share verb."
   },
   "unlike": {
-    "message": "Je n’aime plus",
+    "message": "Ya no me gusta",
     "description": "Verb to remove your liking of a post."
   },
   "like": {
-    "message": "J'aime",
+    "message": "Me gusta",
     "description": "Like verb."
   },
   "photoStory": {
-    "message": " a été identifiée dans une photo.",
+    "message": "  ha sido etiquetado en una foto.",
     "description": "Text that appears after the name of someone tagged in a photo."
   },
   "albumStory": {
-    "message": " a été identifiée dans un album.",
+    "message": " ha sido etiquetado en un álbum.",
     "description": "Text that appears after the name of someone tagged in an album."
   },
   "videoStory": {
-    "message": " a été identifiée dans un vidéo.",
+    "message": " ha sido etiquetado en un vídeo.",
     "description": "Text that appears after the name of someone tagged in a video."
   },
   "error": {
-    "message": "Pour utiliser l'application Facebook pour l'extension Chrome, s'il vous plaît login <a href=\"http://facebook.com\">Facebook</a> en premier.",
+    "message": "Para utilizar el Facebook para la extensión Chrome, por favor acceda a <a href=\"http://facebook.com\">Facebook</a> en primer lugar.",
     "description": "Error message displayed when user not logged into Facebook."
   },
   "statusWidth": {
-    "message": "234px",
+    "message": "225px",
     "description": "How big a textarea can we fit?"
   }
 
