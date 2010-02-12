@@ -1,0 +1,50 @@
+{
+  "extName": {
+    "message": "Facebook for Google Chrome",
+    "description": "Extension name."
+  },
+  "extDesc": {
+    "message": "Extension which lets you read your Facebook news feed and wall. You can also post status updates.",
+    "description": "Description of extension."
+  },
+  "statusFiller": {
+    "message": "What's on your mind?",
+    "description": "Text inviting a user to post a status."
+  },
+  "comment": {
+    "message": "Comment",
+    "description": "Comment verb."
+  },
+  "share": {
+    "message": "Share",
+    "description": "Share verb."
+  },
+  "unlike": {
+    "message": "Unlike",
+    "description": "Verb to remove your liking of a post."
+  },
+  "like": {
+    "message": "Like",
+    "description": "Like verb."
+  },
+  "photoStory": {
+    "message": " was tagged in a photo.",
+    "description": "Text that appears after the name of someone tagged in a photo."
+  },
+  "albumStory": {
+    "message": " was tagged in an album.",
+    "description": "Text that appears after the name of someone tagged in an album."
+  },
+  "videoStory": {
+    "message": " was tagged in a video.",
+    "description": "Text that appears after the name of someone tagged in a video."
+  },
+  "error": {
+    "message": "To use the Facebook for Chrome extension, please login to <a href=\"http://facebook.com\">Facebook</a> first.",
+    "description": "Error message displayed when user not logged into Facebook."
+  },
+  "statusWidth": {
+    "message": "257px",
+    "description": "How big a textarea can we fit?"
+  }
+}

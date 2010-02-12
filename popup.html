@@ -19,7 +19,7 @@
 
       function postStatus(fb) {
         var status = $('#composer-area').val();
-        $('#composer-area').val('What\'s on your mind?');
+        $('#composer-area').val(chrome.i18n.getMessage("statusFiller"));
         var url = fburl + fb.find('#content .FN_publisher .LPublisherView .FN_write-view.profileWall .FN_write-form').attr('action');
         jQuery.post(url, {"source": "home", "message": status, "__async__": "true" });
       }
@@ -101,7 +101,7 @@
             var url = fburl + p.find('.FN_comment_form').attr('action');
             var params = deserialize(url.split('?')[1]);
             url = url.split('?')[0];
-            var area = $('<li class="post-comment"><textarea rows="3"></textarea><button class="comment-submit">Comment</button></li> ');
+            var area = $('<li class="post-comment"><textarea rows="3"></textarea><button class="comment-submit">'+chrome.i18n.getMessage("comment")+'</button></li> ');
             area.find('.comment-submit').click(function() {
               var cmt = $(this).parent().find('textarea').val();
               var li = $('<li class="comment"></li>');
@@ -166,7 +166,7 @@
       }
 
       function processActions(li, post, likeF, unlikeF, time) {
-        var actions = $('<div class="actions"><span class="time">' + time + '</span> &#183; <span class="a comment-btn">Comment</span> &#183; <a class="like-btn">Like</a></div>');
+        var actions = $('<div class="actions"><span class="time">' + time + '</span> &#183; <span class="a comment-btn">'+chrome.i18n.getMessage("comment")+'</span> &#183; <a class="like-btn">Like</a></div>');
         if(post.find('.msg .attch').length != 0) {
           actions.css('clear', 'both');
         }
@@ -259,7 +259,7 @@
           } else {
             name = li.contents().get(2).textContent;
           }
-          var desc = ' was tagged in a video.';
+          var desc = chrome.i18n.getMessage('videoStory');
           var img = li.find('.attachment .attachmentMedia a');
           var l = $('<li></li>');
           l.append('<div class="pic"><img class="mini" src="images/video.png" /></div>');
@@ -293,9 +293,9 @@
           }
           var desc;
           if(li.text().indexOf('photo') != -1) {
-            desc = ' was tagged in a photo.';
+            desc = chrome.i18n.getMessage("photoStory");
           } else {
-            desc = ' was tagged in an album.';
+            desc = chrome.i18n.getMessage("albumStory");
           }
           var img = li.find('.attachment .attachmentMedia a');
           var l = $('<li></li>');
@@ -368,14 +368,14 @@
 
       function like(url) {
         return function() {
-          $(this).text('Unlike');
+          $(this).text(chrome.i18n.getMessage('unlike'));
           jQuery.get(url);
         };
       }
 
       function unlike(url) {
         return function() {
-          $(this).text('Like');
+          $(this).text(chrome.i18n.getMessage('like'));
           jQuery.get(url);
         };
       }
@@ -435,6 +435,10 @@
       }
 
       $(document).ready(function() {
+        $('#composer-area').css('width', chrome.i18n.getMessage('statusWidth'));
+        $('#composer-area').text(chrome.i18n.getMessage('statusFiller'));
+        $('#composer-submit').text(chrome.i18n.getMessage('share'));
+        $('#error').html(chrome.i18n.getMessage('error'));
         chrome.extension.getBackgroundPage().markNotificationsRead();
         chrome.extension.getBackgroundPage().getStreamPosts(false, function(fb) {
           renderStreamPosts(fb, true);
@@ -503,7 +507,7 @@
 
         $('#composer-cancel').click(function() {
           $("#composer").fadeOut();
-          $('#composer-area').val('What\'s on your mind?');
+          $('#composer-area').val(chrome.i18n.getMessage('statusFiller'));
         });
 
         $('a').live('click', function() {
