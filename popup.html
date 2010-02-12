@@ -447,9 +447,19 @@
             }
           } else {
             // In this case, user is trying to refresh
+            $(this).children('img.refresh-btn').addClass('rotate');
+            var id = $(this).attr('id');
+            var div = $(this);
             chrome.extension.getBackgroundPage().getStreamPosts(true, function(fb) {
+              console.log(id);
+              if(id == 'stream-btn') {
+                div.children('img.refresh-btn').removeClass('rotate');
+              }
               renderStreamPosts(fb, false);
                 chrome.extension.getBackgroundPage().getWallPosts(true, function(fb) {
+                if(id == 'wall-btn') {
+                  div.children('img.refresh-btn').removeClass('rotate');
+                }
                 renderWall(fb);
               });
             });
