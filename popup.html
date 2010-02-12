@@ -379,6 +379,7 @@
       }
 
       function renderWall(fb) {
+        $("#wall").empty();
         fb.find('#content #contentWrapper .LSplitPage_Content .LStreamView:nth-child(4) li').map(function() {
           newWallPost($(this));
           return 1;
