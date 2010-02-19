@@ -12,7 +12,7 @@
   "browser_action": {
     "default_icon": "images/icon19.png",
     "default_title": "Facebook",
-    "popup": "popup.html"
+    "popup": "window.html"
   },
   "permissions": [
     "tabs", "http://*.facebook.com/"

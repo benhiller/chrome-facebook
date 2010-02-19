@@ -344,3 +344,52 @@ button:active {
 }
 
 @-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); } 50% { -webkit-transform: rotate(180deg); } 100% { -webkit-transform: rotate(360deg); } }
+
+    a.login-btn:active {
+      background-position:left -210px
+    }
+
+     a.login-btn:active span{
+          border-bottom:solid 1px #29447e;border-top:solid 1px #45619d;background:#4f6aa3;text-shadow:none
+      }
+
+     a.login-btn {
+      background-color: #29447E;
+      background-image: url(http://static.ak.connect.facebook.com/images/connect_sprite.png);
+      display: inline-block;
+      font-size: 11px;
+      height: 22px;
+      line-height: 14px;
+      outline-color: #3B5998;
+      outline-width: 0px;
+      padding-left: 1px;
+      text-decoration: none;
+      background-position: 0% -188px;
+      border-bottom-color: #3B5998;
+    }
+
+    a.login-btn span {
+      background-clip: border-box;
+      background-color: #5F78AB;
+      background-image: url(http://static.ak.connect.facebook.com/images/connect_sprite.png);
+      background-origin: padding-box;
+      border-bottom-color: #1A356E;
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+      border-top-color: #879AC0;
+      border-top-style: solid;
+      border-top-width: 1px;
+      color: white;
+      display: block;
+      font-weight: bold;
+      height: 14px;
+      margin-bottom: 0px;
+      margin-left: 21px;
+      margin-right: 1px;
+      margin-top: 1px;
+      padding-bottom: 3px;
+      padding-left: 6px;
+      padding-right: 6px;
+      padding-top: 2px;
+      max-width: none;
+    }

@@ -2,92 +2,20 @@
 <head>
     <script src="jquery.js"></script>
 <script>
-  var wall;
-  var profileURL;
-  var fb;
-  var frequency = 1000 * 60 * 10; // How frequently do we update? Every 10 minutes
-  var mostRecentStream;
-  var mostRecentWall;
+  /*
+    API:
+      login(id sesssion_key, id uid, id secret); // Before this is called, nothing will work
+      logout();
+      postStatus(string status);
+      likePost(id post);
+      commentPost(id post, string comment);
+      Story[] getStream(bool refresh, id filter_key); // Can get wall or news feed, just change filter_key
+      Story[] getNotifications(bool refresh); // Maybe need diff return type
 
-  function getStreamPosts(update, cb) {
-    if($('#fb').find('#content').length == 0 || update) {
-      var loggedInCheck = $('#fb').find('.container .headline').text();
-      if(loggedInCheck != null && loggedInCheck.indexOf('The fastest way') != -1) {
-        chrome.browserAction.setIcon({"path": "/images/icon-loggedout.png"});
-      }
-      $('#fb').load('http://lite.facebook.com', null, function() {
-        var loggedInCheck = $('#fb').find('.container .headline').text();
-        if(loggedInCheck != null && loggedInCheck.indexOf('The fastest way') != -1) {
-          chrome.browserAction.setIcon({"path": "/images/icon-loggedout.png"});
-        }
-        cb($('#fb'));
-      });
-    } else {
-      cb($('#fb'));
-    }
-  }
-
-  function getWallPosts(update, cb) {
-    if($('#fb-wall').find('#content').length == 0 || update) {
-      profileURL = 'http://lite.facebook.com' + $('#fb #header #navigation > a:nth-child(2)').attr('href');
-      $('#fb-wall').load(profileURL, null, function() {
-        cb($('#fb-wall'));
-      });
-    } else {
-      cb($('#fb-wall'));
-    }
-  }
-
-  function determineNotifications() {
-    var notif = $('#fb #content #contentWrapper .LSplitPage_Content h1 a:first').text()
-    if(notif.split('(').length > 1) {
-      var num = notif.split('(')[1].split(')')[0];
-      chrome.browserAction.setBadgeText({text: num });
-    } else {
-      chrome.browserAction.setBadgeText({text: '' });
-    }
-  }
-
-  function loadNotifications(cb) {
-    $('#fb-notif').load('http://lite.facebook.com/notifications/', null, function() {
-      cb($('#fb-notif'));
-    });
-  }
-
-  function markNotificationsRead() {
-    loadNotifications(function() {});
-    chrome.browserAction.setBadgeText({text: '' });
-  }
-
-  function update() {
-    /* var version = 1.5;
-    if(localStorage['init'] === undefined || localStorage['init'] < version) {
-      chrome.tabs.create({ url: 'start_page.html' });
-
-      localStorage['init'] = version;
-    }*/
-    getStreamPosts(true, function(a) {
-      determineNotifications();
-      getWallPosts(true, function(a) {});
-    });
-    window.setTimeout(update, frequency);
-  }
-
-  function getName() {
-    return $('#fb-wall').find('#content #contentWrapper .LSplitPage_Content h1').contents().get(0).textContent;
-  }
-
-  $(document).ready(function() {
-    update();
-  });
-
+      // Obviously, expand as needed
+  */
 </script>
 </head>
 <body>
-  <div id="fb"></div>
-  <div id="fb-wall"></div>
-  <div id="fb-notif"></div>
-  <img id="logged_in" src="images/icon19.png" />
-  <img id="logged_out" src="images/icon19_grey.png" />
 </body>
 </html>
