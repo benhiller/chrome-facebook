@@ -10,28 +10,38 @@ var setupProcess = 0;
 function login(session, perms) {
   // Ignore perms for now
   setupProcess = 2;
-  localStorage['session'] = JSON.stringify(session);
+  localStorage.session = JSON.stringify(session);
+  localStorage.logged_in = 'true';
   FB.init({ apiKey: apiKey, session: session, status: true });
 }
 
 function logout() {
   setupProcess = 0;
+  localStorage.logged_in = 'false';
   FB.logout(function(result) {
     // TODO - Make sure it worked?
   });
 }
 
 function onLoginOrLoggedIn(cb) {
-  FB.Event.monitor('auth.statusChange', function() {
-    if(FB._userStatus == 'connected') {
-      cb();
-    }
+  FB.Event.subscribe('auth.login', function() {
+    cb();
   });
-  FB.getLoginStatus(function(result) {
-    if(result.session) {
-      cb();
-    }
+  if(FB.getSession() !== null) {
+    alert('a');
+    cb();
+  }
+  // I do not think we need to check current login status
+}
+
+function onLogout(cb) {
+  FB.Event.subscribe('auth.logout', function() {
+    cb();
   });
+}
+
+function isLoggedIn() {
+  return (FB.getSession() !== null);
 }
 
 function publish(status) {
@@ -61,26 +71,24 @@ function addLike(post_id) {
   });
 }
 
-function getStream() {
+function getStream(cb) {
 }
 
-function startBackground() {
+$(document).ready(function() {
   // Do things here that must be done when the extension is
   // installed/opened
   // Such as, test login status, load news feed, check for
   // notifications
-  if(localStorage['session']) {
-    login(JSON.parse(localStorage['session']));
+  if(localStorage.logged_in == 'true') {
+    login(JSON.parse(localStorage.session));
   }
-}
+});
 
 function getProfilePic(cb) {
   FB.api({
-    method: 'fql.query', query: 'SELECT pic_square FROM profile WHERE id='
-                                + FB.getSession().uid
+    method: 'fql.query', query: 'SELECT pic_square FROM profile WHERE id=' + FB.getSession().uid
   },
   function(result) {
-    console.log(result);
     cb(result[0].pic_square);
   });
 }

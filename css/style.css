@@ -222,7 +222,7 @@ button:active {
 .likes {
   padding-top: 5px;
   font-size: 11px;
-  background-image: url(images/like.png);
+  background-image: url(../images/like.png);
   background-repeat: no-repeat;
   background-position: 5px 6px;
   padding-left: 23px;
@@ -360,9 +360,9 @@ a.login-btn:active span{
 a.login-btn {
   -webkit-box-shadow: rgba(0,0,0, 0.0976562) 0px 1px 0px 0px;
   background-color: #29447E;
-  background-image: url(http://static.ak.connect.facebook.com/images/connect_sprite.png);
+  background-image: url(../images/connect_sprite.png);
   display: inline-block;
-  width: 150px;
+  width: 140px;
   font-size: 11px;
   padding-left: 1px;
   background-position: 0% -188px;
@@ -371,7 +371,7 @@ a.login-btn {
 }
 
 a.login-btn span {
-  background-image: url(http://static.ak.connect.facebook.com/images/connect_sprite.png);
+  background-image: url(../images/connect_sprite.png);
   border-bottom: #29447E solid 1px;
   border-top: #879AC0 solid 1px;
   display: block;
@@ -399,5 +399,5 @@ a.login-btn span {
 #login-btn-div {
   margin: 15px auto;
   display: block;
-  width: 150px;
+  width: 140px;
 }

@@ -570,7 +570,7 @@ if (!window.FB) {
       cdn : (window.location.protocol == 'https:'
               ? 'https://s-static.ak.fbcdn.net/'
               : 'http://static.ak.fbcdn.net/'),
-      www : window.location.protocol + '//www.facebook.com/'
+      www : 'http://www.facebook.com/'
     },
     _locale: null,
 
