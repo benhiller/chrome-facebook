@@ -48,7 +48,8 @@ function isLoggedIn() {
 function publish(status, cb) {
   FB.api({
     method: 'stream.publish',
-    message: status
+    message: status,
+    // action_links: [{text: 'Dislike', href: 'localhost'}] // April fools joke?
   }, function(result) {
     cb(result);
   });
