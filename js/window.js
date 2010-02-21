@@ -10,3 +10,7 @@ function logout() {
 function submitComment(postID, comment) {
   background.addComment(postID, comment, console.log);
 }
+
+function submitStatus(status) {
+  background.publish(status, console.log);
+}

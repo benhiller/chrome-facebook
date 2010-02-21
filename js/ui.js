@@ -172,6 +172,8 @@ function initEvents() {
 
   $('#composer-submit').click(function() {
       // Submit status
+      submitStatus($('#composer textarea').val());
+      $('#composer textarea').val('').focusout();
   });
 
   $('a').live('click', function() {

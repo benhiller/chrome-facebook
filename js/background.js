@@ -45,11 +45,12 @@ function isLoggedIn() {
   return (FB.getSession() !== null);
 }
 
-function publish(status) {
-  FB.publish({
+function publish(status, cb) {
+  FB.api({
+    method: 'stream.publish',
     message: status
   }, function(result) {
-    // TODO - Ensure it succeeded, report error
+    cb(result);
   });
 }
 
@@ -60,7 +61,6 @@ function addComment(post_id, comment, cb) {
     comment: comment
   }, function(result) {
     cb(result);
-    // Handle response in some manner
   });
 }
 
