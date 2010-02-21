@@ -46,7 +46,7 @@ function processPost(post, people) {
   }
 
   var result = $('<li class="story"></li>');
-  result.data(post.post_id);
+  result.data('post_id', post.post_id);
 
   // This is where the bulk of the interaction with the raw API data takes place.
   // Possibly, as it evolves, I will find ways to split it up more, but for now
@@ -162,6 +162,14 @@ function initEvents() {
     }
   });
 
+  $('.comment-submit').live('click', function() {
+    var post = $(this).parents('li.story');
+    var postID = post.data('post_id');
+    submitComment(postID, post.find('.post-comment textarea').val());
+    removeCommentBox(post);
+    // Will need to also display comment in list
+  });
+
   $('#composer-submit').click(function() {
       // Submit status
   });
@@ -202,4 +210,8 @@ function showAndSelectCommentBox(post) {
     commentBox = post.find('.post-comment');
   }
   commentBox.find('textarea').focus();
+}
+
+function removeCommentBox(post) {
+  post.find('.post-comment').remove();
 }

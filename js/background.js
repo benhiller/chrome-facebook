@@ -53,12 +53,13 @@ function publish(status) {
   });
 }
 
-function addComment(post_id, comment) {
+function addComment(post_id, comment, cb) {
   FB.api({
     method: 'stream.addComment',
     post_id: post_id,
     comment: comment
   }, function(result) {
+    cb(result);
     // Handle response in some manner
   });
 }
