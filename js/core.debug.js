@@ -565,7 +565,8 @@ if (!window.FB) {
     //
     // the various domains needed for using Connect
     _domain: {
-      api : window.location.protocol + '//api.facebook.com/',
+      // api : window.location.protocol + '//api.facebook.com/',
+      api : 'http://api.facebook.com/',
       cdn : (window.location.protocol == 'https:'
               ? 'https://s-static.ak.fbcdn.net/'
               : 'http://static.ak.fbcdn.net/'),
@@ -817,6 +818,7 @@ FB.provide('', {
         }
       }
     }
+
 
     try {
       FB.RestServer.jsonp(params, cb);
