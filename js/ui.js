@@ -35,3 +35,11 @@ function initClicks() {
     logout();
   });
 }
+
+function showActiveIcon() {
+  chrome.browserAction.setIcon({ path: '../images/icon19.png'});
+}
+
+function showInactiveIcon() {
+  chrome.browserAction.setIcon({ path: '../images/icon-loggedout.png'});
+}

@@ -23,7 +23,7 @@ function logout() {
   });
 }
 
-function onLoginOrLoggedIn(cb) {
+function onLogin(cb) {
   FB.Event.subscribe('auth.login', function() {
     cb();
   });

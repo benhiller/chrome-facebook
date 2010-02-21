@@ -49,7 +49,8 @@ $(document).ready(function() {
       showLogin();
     }
 
-    background.onLoginOrLoggedIn(function() {
+    background.onLogin(function() {
+      showActiveIcon();
       hideLogin();
       background.getProfilePic(function(picURL) {
         showProfilePic(picURL);
@@ -64,6 +65,7 @@ $(document).ready(function() {
       showLogin();
       removeProfilePic();
       removeStream();
+      showInactiveIcon();
     });
 
     initClicks();
