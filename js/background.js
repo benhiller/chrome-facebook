@@ -78,7 +78,7 @@ function getStream(cb) {
   FB.api({
     method: 'fql.multiquery',
     queries:
-      { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE filter_key="nf"',
+      { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE filter_key="nf" AND is_hidden = 0',
         people: 'SELECT uid, name, pic_square, profile_url from user WHERE uid IN (SELECT actor_id FROM #news_feed) OR uid IN (SELECT target_id FROM #news_feed)'
       }
       // TODO - what about people who liked/commented on something!
