@@ -349,15 +349,15 @@ button {
   100% { -webkit-transform: rotate(360deg); }
 }
 
-a.login-btn:active {
+span.login-btn:active {
   background-position:left -210px
 }
 
-a.login-btn:active span{
+span.login-btn:active span{
   border-bottom:solid 1px #29447e;border-top:solid 1px #45619d;background:#4f6aa3;text-shadow:none
 }
 
-a.login-btn {
+span.login-btn {
   -webkit-box-shadow: rgba(0,0,0, 0.0976562) 0px 1px 0px 0px;
   background-color: #29447E;
   background-image: url(../images/connect_sprite.png);
@@ -370,7 +370,7 @@ a.login-btn {
   font-weight: bold;
 }
 
-a.login-btn span {
+span.login-btn span {
   background-image: url(../images/connect_sprite.png);
   border-bottom: #29447E solid 1px;
   border-top: #879AC0 solid 1px;
