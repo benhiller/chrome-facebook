@@ -28,7 +28,6 @@ function onLoginOrLoggedIn(cb) {
     cb();
   });
   if(FB.getSession() !== null) {
-    alert('a');
     cb();
   }
   // I do not think we need to check current login status
