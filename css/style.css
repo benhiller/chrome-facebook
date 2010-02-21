@@ -68,14 +68,14 @@ button:active {
   top: 0px;
 }
 
-#pic {
+#profile-pic {
   height: 49px;
   width: 49px;
   margin-bottom: 12px;
   margin-left: 9px;
 }
 
-#pic img {
+#profile-pic img {
   height: 49px;
   width: 49px;
   -webkit-border-radius: 3px;
@@ -112,7 +112,7 @@ button:active {
   margin-left: 40px;
   padding-left: 0px;
   margin-top: -13px;
-  min-height: 500px;
+  min-height: 400px;
 }
 
 #error {
@@ -343,10 +343,10 @@ button:active {
   -webkit-animation-play-state: paused;
 }
 
-@-webkit-keyframes spin { 
-  0% { -webkit-transform: rotate(0deg); } 
-  50% { -webkit-transform: rotate(180deg); } 
-  100% { -webkit-transform: rotate(360deg); } 
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  50% { -webkit-transform: rotate(180deg); }
+  100% { -webkit-transform: rotate(360deg); }
 }
 
 a.login-btn:active {
@@ -358,36 +358,24 @@ a.login-btn:active span{
 }
 
 a.login-btn {
+  -webkit-box-shadow: rgba(0,0,0, 0.0976562) 0px 1px 0px 0px;
   background-color: #29447E;
   background-image: url(http://static.ak.connect.facebook.com/images/connect_sprite.png);
   display: inline-block;
+  width: 150px;
   font-size: 11px;
-  height: 22px;
-  line-height: 14px;
-  outline-color: #3B5998;
-  outline-width: 0px;
   padding-left: 1px;
-  text-decoration: none;
   background-position: 0% -188px;
-  border-bottom-color: #3B5998;
+  color: white;
+  font-weight: bold;
 }
 
 a.login-btn span {
-  background-clip: border-box;
-  background-color: #5F78AB;
   background-image: url(http://static.ak.connect.facebook.com/images/connect_sprite.png);
-  background-origin: padding-box;
-  border-bottom-color: #1A356E;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-top-color: #879AC0;
-  border-top-style: solid;
-  border-top-width: 1px;
-  color: white;
+  border-bottom: #29447E solid 1px;
+  border-top: #879AC0 solid 1px;
   display: block;
-  font-weight: bold;
   height: 14px;
-  margin-bottom: 0px;
   margin-left: 21px;
   margin-right: 1px;
   margin-top: 1px;
@@ -395,23 +383,21 @@ a.login-btn span {
   padding-left: 6px;
   padding-right: 6px;
   padding-top: 2px;
-  max-width: none;
 }
 
-// TODO
-a.white-btn {
-  background-color: #EEEEEE;
-  background-image: url(http://b.static.ak.fbcdn.net/rsrc.php/z1V2B/hash/apfsevhg.png);
-  background-position: 0 0;
-  border-top-color: #999;
-  border-right-color: #999;
-  border-bottom-color: #888;
-  border-left-color: #999;
-  border-style: solid;
+#login {
+  margin-top: 30px;
+  margin-left: 50px;
+  padding: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 325px;
+  -webkit-border-radius: 3px;
+  border: 1px solid #CCC;
 }
 
-a.white-btn span {
-  color: #333;
-  background-color: transparent;
-  background-image: none;
+#login-btn-div {
+  margin: 15px auto;
+  display: block;
+  width: 150px;
 }

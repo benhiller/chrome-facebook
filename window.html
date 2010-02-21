@@ -3,7 +3,9 @@
   <head>
     <script src="js/jquery.js"></script>
     <script src="js/jquery.hoverIntent.minified.js"></script>
+    <script src="js/constants.js"></script>
     <script src="js/login.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/init.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
   </head>
@@ -15,6 +17,7 @@
         <li id="stream-btn" class="selected"><img class="button" src="images/stream.png" title="News Feed"/><img class="refresh-btn" src="images/refresh.png" /></li>
         <li id="wall-btn"><img class="button" src="images/incoming.png" title="Wall" /><img class="refresh-btn" src="images/refresh.png" /></li>
         <li id="notifications-btn"><img class="button" src="images/notifications.png" title="Notifications" /><img class="refresh-btn" src="images/refresh.png" /></li>
+        <li id="logout-btn">logout</li>
       </ul>
     </div>
     <div id="content">
@@ -22,7 +25,7 @@
         <textarea rows="1" cols="40" id="composer-area">What's on your mind?</textarea>
         <button id="composer-submit">Share</button>
       </div>
-      <div id="loading">
+      <div id="loading" style="display:none">
         <img src="images/loading.gif" />
       </div>
       <ul id="stream">
@@ -31,8 +34,12 @@
       </ul>
       <ul id="notifications">
       </ul>
-      <ul id="login">
-        <p>Using the new Facebook for Chrome extension is a two-step process: First, <a class="login-btn" id="login-btn"> <span id="login-text">Login to Facebook</span></a>. Once you have connected with this ext, open the popup and click <a class="white-btn" id="finish-login-btn"><span>here</span></a></p>
+      <ul id="login" style="display:none">
+        <div id="error" style="display:none">
+          Sorry, your login did not work, please try again.
+        </div>
+        <p>The updated Facebook for Google Chrome extension now uses Facebook Connect. To get started, click below:</p>
+        <div id="login-btn-div"><a class="login-btn" id="login-btn"><span id="login-text">Login to Facebook</span></a></div>
       </ul>
     </div>
     <script type="text/javascript">
@@ -47,6 +54,6 @@
       pageTracker._setCustomVar(0, 'version', '2.0', 1);
       pageTracker._trackPageview();
     } catch(err) {}</script>
-    
+
   </body>
 </html>

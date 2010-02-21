@@ -5,33 +5,40 @@
   // Obviously, expand as needed
 */
 
+var setupProcess = 0;
 
-function login(sess, perms) {
+function login(session, perms) {
   // Ignore perms for now
-  // TODO: Look at http://static.ak.fbcdn.net/connect/en_US/core.debug.js
-  // and figure out how to use setSession
-  loggedIn = true;
+  setupProcess = 2;
+  localStorage['session'] = JSON.stringify(session);
+  FB.init({ apiKey: apiKey, session: session, status: true });
 }
 
 function logout() {
+  setupProcess = 0;
   FB.logout(function(result) {
     // TODO - Make sure it worked?
   });
 }
 
-function ifLoggedIn(cb) {
-  return FB.getLoginStatus(function(result) {
-    if(response.session) {
+function onLoginOrLoggedIn(cb) {
+  FB.Event.monitor('auth.statusChange', function() {
+    if(FB._userStatus == 'connected') {
+      cb();
+    }
+  });
+  FB.getLoginStatus(function(result) {
+    if(result.session) {
       cb();
     }
   });
 }
 
 function publish(status) {
-  FB.publish({ 
+  FB.publish({
     message: status
   }, function(result) {
-    // TODO - Ensure it succeeded, report error 
+    // TODO - Ensure it succeeded, report error
   });
 }
 
@@ -54,11 +61,26 @@ function addLike(post_id) {
   });
 }
 
-function getStream(
+function getStream() {
+}
 
 function startBackground() {
   // Do things here that must be done when the extension is
   // installed/opened
   // Such as, test login status, load news feed, check for
   // notifications
+  if(localStorage['session']) {
+    login(JSON.parse(localStorage['session']));
+  }
+}
+
+function getProfilePic(cb) {
+  FB.api({
+    method: 'fql.query', query: 'SELECT pic_square FROM profile WHERE id='
+                                + FB.getSession().uid
+  },
+  function(result) {
+    console.log(result);
+    cb(result[0].pic_square);
+  });
 }
