@@ -3,6 +3,8 @@
   <head>
     <script src="js/jquery.js"></script>
     <script src="js/jquery.hoverIntent.minified.js"></script>
+    <script src="js/jquery.timeago.js"></script>
+    <script src="js/underscore.js"></script>
     <script src="js/constants.js"></script>
     <script src="js/login.js"></script>
     <script src="js/window.js"></script>
@@ -24,7 +26,7 @@
     <div id="content">
       <div id="composer" style="display:none">
         <textarea rows="1" cols="40" id="composer-area">What's on your mind?</textarea>
-        <button id="composer-submit">Share</button>
+        <span class="share-btn"><button id="composer-submit">Share</button></span>
       </div>
       <div id="loading" style="display:none">
         <img src="images/loading.gif" />

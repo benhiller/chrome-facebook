@@ -40,6 +40,9 @@ function checkForSuccessPage() {
 }
 
 $(document).ready(function() {
+    background.setStart(showLoading);
+    background.setEnd(hideLoading);
+
     chrome.tabs.onUpdated.addListener(checkForSuccessPage);
 
     // For logging in to FB4C
@@ -52,22 +55,20 @@ $(document).ready(function() {
     background.onLogin(function() {
       showActiveIcon();
       hideLogin();
-      background.getProfilePic(function(picURL) {
-        showProfilePic(picURL);
-      });
+      background.getProfilePic(showProfilePic);
       // TODO - just a prototype
-      background.getStream(function(stream) {
-        showStream(stream);
-      });
+      background.getStream(showStream);
+      showComposer();
     });
 
     background.onLogout(function() {
       showLogin();
       removeProfilePic();
+      hideComposer();
       removeStream();
       showInactiveIcon();
     });
 
-    initClicks();
+    initEvents();
 
 });

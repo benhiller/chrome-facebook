@@ -6,6 +6,8 @@
 */
 
 var setupProcess = 0;
+var start;
+var end;
 
 function login(session, perms) {
   // Ignore perms for now
@@ -70,7 +72,48 @@ function addLike(post_id) {
   });
 }
 
+// TODO - probably need to parameterize things in query at some point
 function getStream(cb) {
+  if(start) start();
+  FB.api({
+    method: 'fql.multiquery',
+    queries:
+      { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE filter_key="nf"',
+        people: 'SELECT uid, name, pic_square, profile_url from user WHERE uid IN (SELECT actor_id FROM #news_feed) OR uid IN (SELECT target_id FROM #news_feed)'
+      }
+      // TODO - what about people who liked/commented on something!
+  },
+  function(result) {
+    var posts = result[0].fql_result_set;
+    var uids = _.reduce(posts, [], function(ids, p) {
+      ids = ids.concat(_.map(p.comments.comment_list, function (c) { return c.fromid; }));
+      if(p.likes.sample.length > 0)
+        ids = ids.concat(p.likes.sample);
+      return _.uniq(ids);
+    });
+
+    var people = _.reduce(result[1].fql_result_set, {}, function(d, person) {
+      d[person.uid] = person;
+      return d;
+    });
+
+
+    FB.api({
+      method: 'fql.query',
+      query: 'SELECT uid, name, pic_square, profile_url FROM user WHERE uid IN (' + uids + ')'
+    },
+    function(more_people) {
+      more_people = _.reduce(more_people, {}, function(d, person) {
+        d[person.uid] = person;
+        return d;
+      });
+      for(var uid in more_people) {
+        people[uid] = more_people[uid];
+      }
+      if(end) end();
+      cb(posts, people);
+    });
+  });
 }
 
 $(document).ready(function() {
@@ -90,4 +133,12 @@ function getProfilePic(cb) {
   function(result) {
     cb(result[0].pic_square);
   });
+}
+
+function setStart(cb) {
+  start = cb;
+}
+
+function setEnd(cb) {
+  end = cb;
 }

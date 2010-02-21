@@ -29,17 +29,12 @@ button {
   font-weight: bold;
   font-size: 13px;
   height: 27px;
-  margin-top: 1px;
   color: #FFF;
-  -webkit-box-shadow: #AAA 0px 1px 1px;
-  border: 1px solid #29437E;
-  border-bottom: 1px solid #18356D;
-  background: -webkit-gradient(linear, left bottom, left top, from(#647BAD),  to(#8A9CC2));
   float: right;
-}
-
-button:active {
-  background: -webkit-gradient(linear, left bottom, left top, from(#8A9CC2), to(#647BAD));
+  background: transparent;
+  -webkit-appearance: none;
+  padding-bottom: 5px;
+  border: 0px solid black;
 }
 
 ::-webkit-scrollbar {
@@ -158,44 +153,44 @@ button:active {
   padding-left: 5px;
 }
 
-.msg .attch {
+.message .attch {
   margin-bottom: -1px;
   padding-right: 6px;
   float: left;
   padding-top: 7px;
 }
 
-.msg .attch img {
+.message .attch img {
   width: 84px;
   padding: 2px;
   margin: 2px;
   border: 1px solid #CCC;
 }
 
-.msg .attch img:hover {
+.message .attch img:hover {
   border: 1px solid #888;
 }
 
-.msg .attch-info {
+.message .attch-info {
   font-size: 10px;
   padding-top: 7px;
   padding-bottom: 5px;
 }
 
-.msg .attch-info .title {
+.message .attch-info .title {
   font-weight: bold;
   text-overflow: ellipsis;
   text-wrap: none;
 }
 
-.msg .attch-info .caption {
+.message .attch-info .caption {
   color: #888;
   margin: 0px;
   margin-top: 2px;
   margin-bottom: -5px;
 }
 
-.msg .attch-info .text {
+.message .attch-info .text {
   margin-bottom: -3px;
 }
 
@@ -281,7 +276,7 @@ button:active {
   padding-right: 6px;
   padding-bottom: 5px;
   padding-top: 5px;
-  border: 1px solid #CBCBCB;
+  border: 1px solid #BBBBBB;
   background-color: #F2F2F2;
   z-index: 99;
   margin-left: 40px;
@@ -295,7 +290,7 @@ button:active {
   height: 19px;
   padding: 2px;
   padding-top: 5px;
-  border: 1px solid #CBCBCB;
+  border: 1px solid #AAA;
   color: #9C9C9C;
   padding-left: 10px;
   margin: 0px;
@@ -400,4 +395,22 @@ a.login-btn span {
   margin: 15px auto;
   display: block;
   width: 140px;
+}
+
+span.share-btn {
+  display: inline-block;
+  background-color: #5B74A8;
+  background-image: url(../images/apfsevhg.png);
+  background-position: 0px -48px;
+  border: 1px solid #29447E;
+  border-bottom: 1px solid #1A356E;
+  height: 25px;
+  line-height: 14px;
+  margin-left: 5px;
+  padding-top: 1px;
+}
+
+span.share-btn:active {
+  background-image: none;
+  background-color: #4F6AA3;
 }
