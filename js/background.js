@@ -87,7 +87,7 @@ function getStream(cb) {
     var posts = result[0].fql_result_set;
     var uids = _.reduce(posts, [], function(ids, p) {
       ids = ids.concat(_.map(p.comments.comment_list, function (c) { return c.fromid; }));
-      if(p.likes.sample.length > 0)
+      if(p.likes.can_like && p.likes.sample.length > 0)
         ids = ids.concat(p.likes.sample);
       return _.uniq(ids);
     });

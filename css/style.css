@@ -263,11 +263,15 @@ button {
 }
 
 .post-comment {
-  height: 85px;
+  height: 63px;
 }
 
 .post-comment textarea {
-  width: 270px;
+  width: 274px;
+  margin-top: 3px;
+  margin-left: 0px;
+  border: 1px solid #BDC7D8;
+  resize: none;
 }
 
 #composer {
@@ -398,7 +402,7 @@ a.login-btn span {
   width: 140px;
 }
 
-span.share-btn {
+span.blue-btn {
   display: inline-block;
   background-color: #5B74A8;
   background-image: url(../images/apfsevhg.png);
@@ -411,7 +415,22 @@ span.share-btn {
   padding-top: 1px;
 }
 
-span.share-btn:active {
+span.blue-btn:active {
   background-image: none;
   background-color: #4F6AA3;
+}
+
+span.comment-submit {
+  float: right;
+  margin-right: 5px;
+  height: 20px;
+  width: 64px;
+}
+
+span.comment-submit button {
+  font-size: 11px;
+  line-height: 11px;
+  padding-bottom: 7px;
+  padding-top: 0px;
+  padding-right: 2px;
 }

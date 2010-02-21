@@ -45,7 +45,7 @@ function processPost(post, people) {
     target = people[post.target_id];
   }
 
-  var result = $('<li></li>');
+  var result = $('<li class="story"></li>');
   result.data(post.post_id);
 
   // This is where the bulk of the interaction with the raw API data takes place.
@@ -91,42 +91,40 @@ function processPost(post, people) {
 
   content.append(actions);
 
-  if(post.likes.count > 0 || post.comments.count > 0) {
-    var feedback = $('<div class="feedback"></div>');
-    if(post.likes.count > 0) {
-      var likes = $('<div class="likes"></div>');
-      // TODO - need logic for when to say 'and 2 others'...
-      for(var i = 0; i < post.likes.sample.length; i++) {
-        var liker = people[post.likes.sample[i]];
-        likes.append('<a href="'+liker.profile_url+'">'+liker.name+'</a>');
-      }
-      if(post.likes.count == 1) {
-        likes.append(' likes this.');
-      } else {
-        likes.append(' like this.');
-      }
-      feedback.append(likes);
+  var feedback = $('<div class="feedback"></div>');
+  if(post.likes.count > 0) {
+    var likes = $('<div class="likes"></div>');
+    // TODO - need logic for when to say 'and 2 others'...
+    for(var i = 0; i < post.likes.sample.length; i++) {
+      var liker = people[post.likes.sample[i]];
+      likes.append('<a href="'+liker.profile_url+'">'+liker.name+'</a>');
     }
-
-    if(post.comments.count > 0) {
-      var comments = $('<ul class="comments"></ul>');
-      for(var i = 0; i < post.comments.comment_list.length; i++) {
-        var row = post.comments.comment_list[i];
-        var commenter = people[row.fromid];
-        var comment = $('<li class="comment"></li>');
-        var commentInfo = $('<div class="comment-info"></div>');
-        commentInfo.append('<a href="' + commenter.profile_url + '" class="comment-name">' + commenter.name + '</a>');
-        var date = new Date(row.time * 1000);
-        commentInfo.append('<span class="comment-time">' + jQuery.timeago(date) + '</a>');
-
-        var commentMsg = $('<div class="comment-msg">'+ row.text +'</div>');
-        comment.append(commentInfo).append(commentMsg);
-        comments.append(comment);
-      }
-      feedback.append(comments);
+    if(post.likes.count == 1) {
+      likes.append(' likes this.');
+    } else {
+      likes.append(' like this.');
     }
-    content.append(feedback);
+    feedback.append(likes);
   }
+
+  var comments = $('<ul class="comments"></ul>');
+  if(post.comments.count > 0) {
+    for(var i = 0; i < post.comments.comment_list.length; i++) {
+      var row = post.comments.comment_list[i];
+      var commenter = people[row.fromid];
+      var comment = $('<li class="comment"></li>');
+      var commentInfo = $('<div class="comment-info"></div>');
+      commentInfo.append('<a href="' + commenter.profile_url + '" class="comment-name">' + commenter.name + '</a>');
+      var date = new Date(row.time * 1000);
+      commentInfo.append('<span class="comment-time">' + jQuery.timeago(date) + '</a>');
+
+      var commentMsg = $('<div class="comment-msg">'+ row.text +'</div>');
+      comment.append(commentInfo).append(commentMsg);
+      comments.append(comment);
+    }
+  }
+  feedback.append(comments);
+  content.append(feedback);
 
   result.append(content);
 
@@ -145,7 +143,23 @@ function initEvents() {
   });
 
   $('#composer-area').focus(function() {
-    $(this).css('color', '#000').val('');
+    if($(this).val() == "What's on your mind?") {
+      $(this).css('color', '#000').val('');
+    }
+  }).focusout(function() {
+    if($(this).val() == '') {
+      $(this).css('color', '#9C9C9C').val("What's on your mind?");
+    }
+  });
+
+  $('.post-comment textarea').live('focus', function() {
+    if($(this).val() == "Write a comment...") {
+      $(this).css('color', '#000').val('');
+    }
+  }).live('focusout', function() {
+    if($(this).val() == '') {
+      $(this).css('color', '#9C9C9C').val('Write a comment...');
+    }
   });
 
   $('#composer-submit').click(function() {
@@ -154,6 +168,10 @@ function initEvents() {
 
   $('a').live('click', function() {
     chrome.tabs.create({ url: $(this).attr('href') });
+  });
+
+  $('span.comment-btn').live('click', function() {
+    showAndSelectCommentBox($(this).parents('li.story'));
   });
 }
 
@@ -171,4 +189,17 @@ function showLoading() {
 
 function hideLoading() {
   $('#loading').hide();
+}
+
+function showAndSelectCommentBox(post) {
+  var commentBox;
+  if(post.find('.post-comment').length == 0) {
+    commentBox = $('<li class="post-comment"></li>');
+    commentBox.append('<textarea rows="2"></textarea')
+              .append('<span class="blue-btn comment-submit"><button>Comment</button></span>');
+    post.find('.comments').append(commentBox);
+  } else {
+    commentBox = post.find('.post-comment');
+  }
+  commentBox.find('textarea').focus();
 }
