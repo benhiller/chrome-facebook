@@ -18,6 +18,10 @@ function showComposer() {
   $('#composer').show();
 }
 
+function hideComposer() {
+  $('#composer').hide();
+}
+
 function removeProfilePic() {
   $('#profile-pic').empty();
 }
@@ -32,10 +36,10 @@ function showStream(posts, people) {
     return pplDict;
   });
   console.log(posts, idToPerson);
+  $('#stream').show();
   _.each(posts, function(post) {
     processPost(post, idToPerson);
   });
-  $('#stream').show();
 }
 
 function processPost(post, people) {

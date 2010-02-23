@@ -22,7 +22,7 @@ function checkForSuccessPage() {
           var params = tabs[i].url.split('?')[1].split('&');
           var session = JSON.parse(unescape(params[0].split('=')[1]));
           var perms = JSON.parse(unescape(params[1].split('=')[1]));
-          background.login(session, perms);
+          background.login(session);
           chrome.tabs.onUpdated.removeListener(checkForSuccessPage);
           return;
         }
@@ -43,25 +43,21 @@ $(document).ready(function() {
     background.setStart(showLoading);
     background.setEnd(hideLoading);
 
-    chrome.tabs.onUpdated.addListener(checkForSuccessPage);
-
-    // For logging in to FB4C
-    checkForSuccessPage();
-    if(background.setupProcess === 0) {
-      // Show connect to FB button
-      showLogin();
-    }
-
     background.onLogin(function() {
       showActiveIcon();
       hideLogin();
-      background.getProfilePic(showProfilePic);
-      // TODO - just a prototype
-      background.getStream(showStream);
+      background.getProfilePic(function(url) {
+        showProfilePic(url);
+      });
+      background.getStream(function(posts, people) {
+        showStream(posts, people);
+      });
       showComposer();
     });
 
     background.onLogout(function() {
+      chrome.tabs.onUpdated.addListener(checkForSuccessPage);
+      checkForSuccessPage();
       showLogin();
       removeProfilePic();
       hideComposer();
