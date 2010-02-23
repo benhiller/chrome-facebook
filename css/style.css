@@ -154,45 +154,41 @@ button {
   padding-left: 5px;
 }
 
-.message .attch {
-  margin-bottom: -1px;
-  padding-right: 6px;
-  float: left;
-  padding-top: 7px;
+.attch {
+  display: block;
+  padding-top: 5px;
 }
 
-.message .attch img {
+.attch-media {
+  float: left;
+  padding-right: 10px;
+}
+
+.attch-info {
+  font-size: 11px;
+  display: table;
+}
+
+.attch-name {
+  font-weight: bold;
+  padding-bottom: 2px;
+  color: #1B5998;
+}
+
+.attch-caption, .attch-desc {
+  padding-bottom: 2px;
+  color: gray;
+}
+
+.attch-media img {
   width: 84px;
   padding: 2px;
   margin: 2px;
   border: 1px solid #CCC;
 }
 
-.message .attch img:hover {
+.attch-media img:hover {
   border: 1px solid #888;
-}
-
-.message .attch-info {
-  font-size: 10px;
-  padding-top: 7px;
-  padding-bottom: 5px;
-}
-
-.message .attch-info .title {
-  font-weight: bold;
-  text-overflow: ellipsis;
-  text-wrap: none;
-}
-
-.message .attch-info .caption {
-  color: #888;
-  margin: 0px;
-  margin-top: 2px;
-  margin-bottom: -5px;
-}
-
-.message .attch-info .text {
-  margin-bottom: -3px;
 }
 
 .name, .event-link {

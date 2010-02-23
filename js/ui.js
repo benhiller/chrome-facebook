@@ -74,9 +74,39 @@ function processPost(post, people) {
 
   var message = $('<div class="message"></div>');
   message.append(post.message);
-  content.append(message);
+
+  var attachmentObject = post.attachment;
 
   var actions = $('<div class="actions"></div>');
+
+  // TODO - is this correct?
+  if(attachmentObject.name) {
+    var attachment = $('<div class="attch"></div>');
+    actions.css('clear', 'both');
+
+    var media = $('<div class="attch-media"></div>');
+    _.each(attachmentObject.media, function(medium) {
+      switch(medium.type) {
+        case "link":
+          media.append('<a href="'+medium.href+'"><img src="'+medium.src+'"> </img></a>');
+          break;
+        // Fill in more cases here
+      }
+    });
+    console.log(attachmentObject.media[0].src);
+    attachment.append(media);
+
+    var attachmentInfo = $('<div class="attch-info"></div>');
+    if(attachmentObject.name) attachmentInfo.append('<div class="attch-name"><a href="' + attachmentObject.href + '">' + attachmentObject.name + '</div>');
+    if(attachmentObject.caption) attachmentInfo.append('<div class="attch-caption">' + attachmentObject.caption + '</div>');
+    if(attachmentObject.description) attachmentInfo.append('<div class="attch-desc">' + attachmentObject.description + '</div>');
+    attachment.append(attachmentInfo);
+
+    message.append(attachment);
+  }
+
+  content.append(message);
+
 
   var time = $('<span class="time"></span>');
   var date = new Date(post.created_time*1000);
