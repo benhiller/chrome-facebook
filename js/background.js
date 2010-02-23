@@ -146,6 +146,13 @@ $(document).ready(function() {
     login(JSON.parse(localStorage.session));
   }
 
+  setupLoginLogoutHandlers();
+});
+
+function setupLoginLogoutHandlers() {
+  FB.Event.clear('auth.login');
+  FB.Event.clear('auth.logout');
+
   onLogout(function() {
     chrome.tabs.onUpdated.addListener(checkForSuccessPage);
     checkForSuccessPage();
@@ -155,8 +162,7 @@ $(document).ready(function() {
   onLogin(function() {
     showActiveIcon();
   });
-
-});
+}
 
 function getProfilePic(cb) {
   FB.api({

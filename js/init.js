@@ -2,6 +2,8 @@ $(document).ready(function() {
     background.setStart(showLoading);
     background.setEnd(hideLoading);
 
+    background.setupLoginLogoutHandlers();
+
     background.onLogin(function() {
       showActiveIcon();
       hideLogin();
@@ -23,5 +25,4 @@ $(document).ready(function() {
     });
 
     initEvents();
-
 });
