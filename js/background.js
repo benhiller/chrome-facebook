@@ -65,13 +65,13 @@ function addComment(post_id, comment, cb) {
   });
 }
 
-function addLike(post_id) {
+function addLike(post_id, cb) {
   FB.api({
     method: 'stream.addLike',
     post_id: post_id
   }, function(result) {
     console.log(result);
-    // Handle response in some manner
+    cb(result);
   });
 }
 

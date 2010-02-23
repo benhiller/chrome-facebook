@@ -72,7 +72,15 @@ function processPost(post, people) {
   // TODO - attachments, enable like/comment links, view all comments, view all likers
 
   var message = $('<div class="message"></div>');
-  message.append(post.message);
+  var text = post.message;
+  var urls = text.match(/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/gi);
+  console.log(urls);
+  if(urls !== null) {
+    for(var j = 0; j < urls.length; j++) {
+      text = text.replace(urls[j], '<a href="' + urls[j]+ '">'+urls[j] + '</a>"');
+    }
+  }
+  message.append(text);
 
   var attachmentObject = post.attachment;
 
@@ -87,6 +95,14 @@ function processPost(post, people) {
     _.each(attachmentObject.media, function(medium) {
       switch(medium.type) {
         case "link":
+          // TODO Will it always have href and src?
+          media.append('<a href="'+medium.href+'"><img src="'+medium.src+'"> </img></a>');
+          break;
+        case "photo":
+          // TODO Will it always have href and src?
+          media.append('<a href="'+medium.href+'"><img src="'+medium.src+'"> </img></a>');
+          break;
+        case "video":
           // TODO Will it always have href and src?
           media.append('<a href="'+medium.href+'"><img src="'+medium.src+'"> </img></a>');
           break;
@@ -216,6 +232,10 @@ function initEvents() {
   $('span.comment-btn').live('click', function() {
     showAndSelectCommentBox($(this).parents('li.story'));
   });
+
+  $('span.like-btn').live('click', function() {
+    likeStory($(this).parents('li.story'));
+  });
 }
 
 function showActiveIcon() {
@@ -249,4 +269,8 @@ function showAndSelectCommentBox(post) {
 
 function removeCommentBox(post) {
   post.find('.post-comment').remove();
+}
+
+function likeStory(post) {
+  submitLike(post.data('post_id'));
 }

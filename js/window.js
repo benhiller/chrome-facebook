@@ -14,3 +14,7 @@ function submitComment(postID, comment) {
 function submitStatus(status) {
   background.publish(status, function(r) { console.log(r); } );
 }
+
+function submitLike(postID) {
+  background.addLike(postID, function(r) { console.log(r); } );
+}
