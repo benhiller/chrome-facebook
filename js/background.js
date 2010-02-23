@@ -82,7 +82,7 @@ function getStream(cb) {
     method: 'fql.multiquery',
     queries:
       { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE filter_key="nf" AND is_hidden = 0',
-        people: 'SELECT uid, name, pic_square, profile_url from user WHERE uid IN (SELECT actor_id FROM #news_feed) OR uid IN (SELECT target_id FROM #news_feed)'
+        people: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (SELECT actor_id FROM #news_feed) OR id IN (SELECT target_id FROM #news_feed)'
       }
   },
   function(result) {
@@ -103,10 +103,9 @@ function getStream(cb) {
 
     FB.api({
       method: 'fql.query',
-      query: 'SELECT uid, name, pic_square, profile_url FROM user WHERE uid IN (' + uids + ')'
+      query: 'SELECT id, name, pic_square, url FROM user WHERE id IN (' + uids + ')'
     },
     function(more_people) {
-      console.log(more_people);
       more_people = _.reduce(more_people, {}, function(d, person) {
         d[person.uid] = person;
         return d;
