@@ -1,3 +1,4 @@
+var background = chrome.extension.getBackgroundPage();
 var apiKey = '61615cf294eae2e565943c210d7a9387';
 var successURL = 'http://www.facebook.com/connect/login_success.html';
 var cancelURL = 'http://www.facebook.com/connect/login_failure.html';

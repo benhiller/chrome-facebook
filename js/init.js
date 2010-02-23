@@ -1,5 +1,3 @@
-var background = chrome.extension.getBackgroundPage();
-
 $(document).ready(function() {
     background.setStart(showLoading);
     background.setEnd(hideLoading);

@@ -87,12 +87,12 @@ function processPost(post, people) {
     _.each(attachmentObject.media, function(medium) {
       switch(medium.type) {
         case "link":
+          // TODO Will it always have href and src?
           media.append('<a href="'+medium.href+'"><img src="'+medium.src+'"> </img></a>');
           break;
         // Fill in more cases here
       }
     });
-    console.log(attachmentObject.media[0].src);
     attachment.append(media);
 
     var attachmentInfo = $('<div class="attch-info"></div>');
