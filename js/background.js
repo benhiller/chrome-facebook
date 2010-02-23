@@ -96,22 +96,22 @@ function getStream(cb) {
     });
 
     var people = _.reduce(result[1].fql_result_set, {}, function(d, person) {
-      d[person.uid] = person;
+      d[person.id] = person;
       return d;
     });
 
 
     FB.api({
       method: 'fql.query',
-      query: 'SELECT id, name, pic_square, url FROM user WHERE id IN (' + uids + ')'
+      query: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (' + uids + ')'
     },
     function(more_people) {
       more_people = _.reduce(more_people, {}, function(d, person) {
-        d[person.uid] = person;
+        d[person.id] = person;
         return d;
       });
-      for(var uid in more_people) {
-        people[uid] = more_people[uid];
+      for(var id in more_people) {
+        people[id] = more_people[id];
       }
       if(end) end();
       cb(posts, people);

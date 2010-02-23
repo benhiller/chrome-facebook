@@ -31,7 +31,7 @@ function removeStream() {
 
 function showStream(posts, people) {
   var idToPerson = _.reduce(people, {}, function(pplDict, person) {
-    pplDict[person.uid] = person;
+    pplDict[person.id] = person;
     return pplDict;
   });
   console.log(posts, idToPerson);
@@ -62,10 +62,10 @@ function processPost(post, people) {
   var content = $('<div class="post"></div>');
 
   var info = $('<div class="info"></div>');
-  info.append('<a class="name" href="'+actor.profile_url+'">' + actor.name + '</a>');
+  info.append('<a class="name" href="'+actor.url+'">' + actor.name + '</a>');
   if(post.target_id != null) {
     info.append(' &#155; ')
-        .append('<a class="name" href="'+target.profile_url+'">' + target.name + '</a>');
+        .append('<a class="name" href="'+target.url+'">' + target.name + '</a>');
   }
   content.append(info);
 
@@ -130,7 +130,7 @@ function processPost(post, people) {
     // TODO - need logic for when to say 'and 2 others'...
     for(var i = 0; i < post.likes.sample.length; i++) {
       var liker = people[post.likes.sample[i]];
-      likes.append('<a href="'+liker.profile_url+'">'+liker.name+'</a>');
+      likes.append('<a href="'+liker.url+'">'+liker.name+'</a>');
     }
     if(post.likes.count == 1) {
       likes.append(' likes this.');
@@ -147,7 +147,7 @@ function processPost(post, people) {
       var commenter = people[row.fromid];
       var comment = $('<li class="comment"></li>');
       var commentInfo = $('<div class="comment-info"></div>');
-      commentInfo.append('<a href="' + commenter.profile_url + '" class="comment-name">' + commenter.name + '</a>');
+      commentInfo.append('<a href="' + commenter.url + '" class="comment-name">' + commenter.name + '</a>');
       var date = new Date(row.time * 1000);
       commentInfo.append('<span class="comment-time">' + jQuery.timeago(date) + '</a>');
 
