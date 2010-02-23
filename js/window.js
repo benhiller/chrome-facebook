@@ -8,9 +8,9 @@ function logout() {
 }
 
 function submitComment(postID, comment) {
-  background.addComment(postID, comment, console.log);
+  background.addComment(postID, comment, function(r) { console.log(r); } );
 }
 
 function submitStatus(status) {
-  background.publish(status, console.log);
+  background.publish(status, function(r) { console.log(r); } );
 }
