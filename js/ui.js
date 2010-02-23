@@ -1,13 +1,12 @@
-function showLogin() {
+function showLogin(error) {
   $('#login').show();
+  if(error) {
+    $('#error').show();
+  }
 }
 
 function hideLogin() {
   $('#login').hide();
-}
-
-function showLoginError() {
-  $('#error').show();
 }
 
 function showProfilePic(url) {

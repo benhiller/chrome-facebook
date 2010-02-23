@@ -1,6 +1,6 @@
 function loginAttempt() {
-  chrome.tabs.create({ url: loginURL });
   background.setupProcess = 1;
+  chrome.tabs.create({ url: loginURL });
 }
 
 function logout() {

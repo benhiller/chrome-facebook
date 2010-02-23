@@ -128,6 +128,17 @@ $(document).ready(function() {
   if(localStorage.logged_in == 'true') {
     login(JSON.parse(localStorage.session));
   }
+
+  onLogout(function() {
+    chrome.tabs.onUpdated.addListener(checkForSuccessPage);
+    checkForSuccessPage();
+    showInactiveIcon();
+  });
+
+  onLogin(function() {
+    showActiveIcon();
+  });
+
 });
 
 function getProfilePic(cb) {
@@ -146,4 +157,22 @@ function setStart(cb) {
 
 function setEnd(cb) {
   end = cb;
+}
+
+function checkForSuccessPage() {
+  if(!isLoggedIn()) {
+    chrome.tabs.getAllInWindow(null, function(tabs) {
+      for(var i = 0; i < tabs.length; i++) {
+        if(tabs[i].url.indexOf(successURL) == 0) {
+          // We found a match, now extract the login info and actually login
+          var params = tabs[i].url.split('?')[1].split('&');
+          var session = JSON.parse(unescape(params[0].split('=')[1]));
+          var perms = JSON.parse(unescape(params[1].split('=')[1]));
+          login(session);
+          chrome.tabs.onUpdated.removeListener(checkForSuccessPage);
+          return;
+        }
+      }
+    });
+  }
 }
