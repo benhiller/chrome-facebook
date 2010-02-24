@@ -3,16 +3,18 @@ Facebook for Google Chrome extension
 This branch uses Facebook Connect and will eventually replace the current version. Connect makes it much easier to add more functionality, (ex: notifications, inbox), and is a much cleaner interface.
 
 TODO:
-  Make comment/like/status show up in list/stream after commenting/publishing
+  Improve handling of swf/video attchs
+  Make comment/like show up in list after commenting
   Implement caching for data (don't call API everytime user opens popup)
   Implement 'view all comments/likes'
   Get nice logout icon
   Create nice instruction success page after connecting (and improve welcome screen for ext)
   Implement notification updating, and notification tab
-  Implement refresh
+  Implement refresh for wall, notificaitons
   Implement wall
 
 Later:
   Inbox
+  Publishing attacments (sites) via extension
 
 getLoginStatus does NOT work

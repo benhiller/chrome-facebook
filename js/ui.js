@@ -1,4 +1,5 @@
 function showLogin(error) {
+  $('#logout-btn').hide();
   $('#login').show();
   if(error) {
     $('#error').show();
@@ -7,6 +8,7 @@ function showLogin(error) {
 
 function hideLogin() {
   $('#login').hide();
+  $('#logout-btn').show();
 }
 
 function showProfilePic(url) {
@@ -35,6 +37,7 @@ function showStream(posts, people) {
     return pplDict;
   });
   console.log(posts, idToPerson);
+  $('#stream').empty();
   $('#stream').show();
   _.each(posts, function(post) {
     processPost(post, idToPerson);
@@ -234,6 +237,19 @@ function initEvents() {
     }
   });
 
+  $('#items li.selected').live('hover', function() {
+    showRefresh();
+  }).live('mouseleave', function() {
+    hideRefresh();
+  }).live('click', function() {
+    animateRefresh();
+  });
+
+
+  $('#stream-btn.selected').live('click', function() {
+    refreshStream(animateRefresh, stopAnimatingRefresh);
+  });
+
   $('.post-comment textarea').live('focus', function() {
     if($(this).val() == "Write a comment...") {
       $(this).css('color', '#000').val('');
@@ -247,14 +263,17 @@ function initEvents() {
   $('.comment-submit').live('click', function() {
     var post = $(this).parents('li.story');
     var postID = post.data('post_id');
-    submitComment(postID, post.find('.post-comment textarea').val());
+    submitComment(postID, post.find('.post-comment textarea').val(), function() { refreshStream(); });
     removeCommentBox(post);
     // Will need to also display comment in list
   });
 
   $('#composer-submit').click(function() {
       // Submit status
-      submitStatus($('#composer textarea').val());
+      submitStatus($('#composer textarea').val(),
+      function() {
+        refreshStream(animateRefresh, stopAnimatingRefresh);
+      });
       $('#composer textarea').val('').focusout();
   });
 
@@ -312,4 +331,23 @@ function likeStory(post) {
     removeLike(post.data('post_id'));
     post.find('.like-btn').text('Like');
   }
+}
+
+function showRefresh() {
+  var refreshBtn = $('#items li.selected').children('img.refresh-btn');
+  refreshBtn.fadeIn(200);
+  $('#items li.selected').children('img.button').stop(true, true).animate({opacity: 0.44}, 200);
+}
+
+function hideRefresh() {
+  $('#items li.selected').children('img.refresh-btn').fadeOut(300);
+  $('#items li.selected').children('img.button').stop(true, true).animate({opacity: 1}, 300);
+}
+
+function animateRefresh() {
+  $('#items li.selected').children('img.refresh-btn').addClass('rotate');
+}
+
+function stopAnimatingRefresh() {
+  $('#items li.selected').children('img.refresh-btn').removeClass('rotate');
 }
