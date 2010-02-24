@@ -363,11 +363,11 @@ function renderComments(commentsObj, people) {
   } else if(isArray(commentsObj.comment_list)) {
     comments = commentsObj.comment_list;
     if(commentsObj.count != comments.length) {
-      commentList.append('<li class="show-more-comments"><span class="a">View all comments</span></li>');
+      commentList.append('<li class="show-more-comments"><span class="a">View all '+ commentsObj.count + ' comments</span></li>');
     }
   } else {
     if(commentsObj.count > 0) {
-      commentList.append('<li class="show-more-comments"><span class="a">View all comments</span></li>');
+      commentList.append('<li class="show-more-comments"><span class="a">View all '+ commentsObj.count + ' comments</span></li>');
     }
     // Don't know how to handle this object, probably no comments
     return commentList;

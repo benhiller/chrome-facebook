@@ -241,6 +241,13 @@ button {
   padding-top: 2px;
 }
 
+.comments .show-more-comments {
+  background-image: url(../images/comments.png);
+  margin-left: 3px;
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}
+
 .comment-info {
   padding-bottom: 2px;
 }
