@@ -75,6 +75,16 @@ function addLike(post_id, cb) {
   });
 }
 
+function removeLike(post_id, cb) {
+  FB.api({
+    method: 'stream.removeLike',
+    post_id: post_id
+  }, function(result) {
+    console.log(result);
+    cb(result);
+  });
+}
+
 // TODO - probably need to parameterize things in query at some point
 function getStream(cb) {
   if(start) start();

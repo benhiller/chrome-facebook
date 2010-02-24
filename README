@@ -3,8 +3,7 @@ Facebook for Google Chrome extension
 This branch uses Facebook Connect and will eventually replace the current version. Connect makes it much easier to add more functionality, (ex: notifications, inbox), and is a much cleaner interface.
 
 TODO:
-  Implement like buttons
-  Make comment/status show up in list/stream after commenting/publishing
+  Make comment/like/status show up in list/stream after commenting/publishing
   Implement caching for data (don't call API everytime user opens popup)
   Implement 'view all comments/likes'
   Get nice logout icon
@@ -12,8 +11,6 @@ TODO:
   Implement notification updating, and notification tab
   Implement refresh
   Implement wall
-
-  Why does stream FQL table not seem to include photo stories?
 
 Later:
   Inbox

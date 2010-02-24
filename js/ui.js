@@ -74,7 +74,6 @@ function processPost(post, people) {
   var message = $('<div class="message"></div>');
   var text = post.message;
   var urls = text.match(/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/gi);
-  console.log(urls);
   if(urls !== null) {
     for(var j = 0; j < urls.length; j++) {
       text = text.replace(urls[j], '<a href="' + urls[j]+ '">'+urls[j] + '</a>"');
@@ -134,7 +133,12 @@ function processPost(post, people) {
   }
 
   if(post.likes.can_like) {
-    var like = $('<span class="a like-btn">Like</span>')
+    var like = $('<span class="a like-btn"></span>');
+    if(post.likes.user_likes) {
+      like.append('Unlike');
+    } else {
+      like.append('Like');
+    }
     actions.append(' &#183; ').append(like);
   }
 
@@ -272,5 +276,11 @@ function removeCommentBox(post) {
 }
 
 function likeStory(post) {
-  submitLike(post.data('post_id'));
+  if(post.find('.like-btn').text() == 'Like') {
+    submitLike(post.data('post_id'));
+    post.find('.like-btn').text('Unlike');
+  } else {
+    removeLike(post.data('post_id'));
+    post.find('.like-btn').text('Like');
+  }
 }

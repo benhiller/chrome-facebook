@@ -18,3 +18,7 @@ function submitStatus(status) {
 function submitLike(postID) {
   background.addLike(postID, function(r) { console.log(r); } );
 }
+
+function removeLike(postID) {
+  background.removeLike(postID, function(r) { console.log(r); } );
+}
