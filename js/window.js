@@ -30,3 +30,9 @@ function refreshStream(start, end) {
     showStream(posts, people);
   });
 }
+
+function getAllComments(post, postID) {
+  background.getAllComments(postID, function(comments, people) {
+    showAllComments(post, comments, people);
+  });
+}

@@ -72,7 +72,7 @@ function processPost(post, people) {
   }
   content.append(info);
 
-  // TODO - attachments, enable like/comment links, view all comments, view all likers
+  // TODO - view all likers
 
   var message = $('<div class="message"></div>');
   var text = post.message;
@@ -89,7 +89,7 @@ function processPost(post, people) {
   var actions = $('<div class="actions"></div>');
 
   // TODO - is this correct?
-  if(attachmentObject.name) {
+  if(attachmentObject.name || isArray(attachmentObject.media)) {
     var attachment = $('<div class="attch"></div>');
     actions.css('clear', 'both');
 
@@ -180,34 +180,28 @@ function processPost(post, people) {
   if(post.likes.count > 0) {
     var likes = $('<div class="likes"></div>');
     // TODO - need logic for when to say 'and 2 others'...
-    for(var i = 0; i < post.likes.sample.length; i++) {
-      var liker = people[post.likes.sample[i]];
-      likes.append('<a href="'+liker.url+'">'+liker.name+'</a>');
-    }
-    if(post.likes.count == 1) {
-      likes.append(' likes this.');
+    if(isArray(post.likes.sample)) {
+      for(var i = 0; i < post.likes.sample.length; i++) {
+        var liker = people[post.likes.sample[i]];
+        if(liker.name !== '') {
+          likes.append('<a href="'+liker.url+'">'+liker.name+'</a>');
+        } else {
+          likes.append('<span class="a">Someone</a>');
+        }
+      }
+      if(post.likes.count == 1) {
+        likes.append(' likes this.');
+      } else {
+        likes.append(' like this.');
+      }
     } else {
-      likes.append(' like this.');
+      likes.append('Someone likes this');
     }
     feedback.append(likes);
   }
 
-  var comments = $('<ul class="comments"></ul>');
-  if(post.comments.count > 0) {
-    for(var i = 0; i < post.comments.comment_list.length; i++) {
-      var row = post.comments.comment_list[i];
-      var commenter = people[row.fromid];
-      var comment = $('<li class="comment"></li>');
-      var commentInfo = $('<div class="comment-info"></div>');
-      commentInfo.append('<a href="' + commenter.url + '" class="comment-name">' + commenter.name + '</a>');
-      var date = new Date(row.time * 1000);
-      commentInfo.append('<span class="comment-time">' + jQuery.timeago(date) + '</a>');
+  var comments = renderComments(post.comments, people);
 
-      var commentMsg = $('<div class="comment-msg">'+ row.text +'</div>');
-      comment.append(commentInfo).append(commentMsg);
-      comments.append(comment);
-    }
-  }
   feedback.append(comments);
   content.append(feedback);
 
@@ -263,7 +257,7 @@ function initEvents() {
   $('.comment-submit').live('click', function() {
     var post = $(this).parents('li.story');
     var postID = post.data('post_id');
-    submitComment(postID, post.find('.post-comment textarea').val(), function() { refreshStream(); });
+    submitComment(postID, post.find('.post-comment textarea').val(), function() { getAllComments(post, postID); });
     removeCommentBox(post);
     // Will need to also display comment in list
   });
@@ -287,6 +281,11 @@ function initEvents() {
 
   $('span.like-btn').live('click', function() {
     likeStory($(this).parents('li.story'));
+  });
+
+  $('.show-more-comments').live('click', function() {
+    var story = $(this).parents('li.story');
+    getAllComments(story, story.data('post_id'));
   });
 }
 
@@ -350,4 +349,45 @@ function animateRefresh() {
 
 function stopAnimatingRefresh() {
   $('#items li.selected').children('img.refresh-btn').removeClass('rotate');
+}
+
+function showAllComments(post, comments, people) {
+  post.find('.comments').replaceWith(renderComments(comments, people));
+}
+
+function renderComments(commentsObj, people) {
+  var commentList = $('<ul class="comments"></ul>');
+  var comments;
+  if(isArray(commentsObj)) {
+    comments = commentsObj;
+  } else if(isArray(commentsObj.comment_list)) {
+    comments = commentsObj.comment_list;
+    if(commentsObj.count != comments.length) {
+      commentList.append('<li class="show-more-comments"><span class="a">View all comments</span></li>');
+    }
+  } else {
+    if(commentsObj.count > 0) {
+      commentList.append('<li class="show-more-comments"><span class="a">View all comments</span></li>');
+    }
+    // Don't know how to handle this object, probably no comments
+    return commentList;
+  }
+  for(var i = 0; i < comments.length; i++) {
+    var row = comments[i];
+    var commenter = people[row.fromid];
+    var commentItem = $('<li class="comment"></li>');
+    var commentInfo = $('<div class="comment-info"></div>');
+    commentInfo.append('<a href="' + commenter.url + '" class="comment-name">' + commenter.name + '</a>');
+    var date = new Date(row.time * 1000);
+    commentInfo.append('<span class="comment-time">' + jQuery.timeago(date) + '</a>');
+    var commentMsg = $('<div class="comment-msg">'+ row.text +'</div>');
+    commentItem.append(commentInfo).append(commentMsg);
+    commentList.append(commentItem);
+  }
+  return commentList;
+}
+
+// TODO move to more proper place
+function isArray(obj) {
+  return obj && (length in obj) && typeof obj.length === 'number' && !(obj.propertyIsEnumerable('length'));
 }

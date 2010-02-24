@@ -85,6 +85,26 @@ function removeLike(post_id, cb) {
   });
 }
 
+function getAllComments(postID, cb) {
+  FB.api({
+    method: 'fql.multiquery',
+    queries:
+      { comments: 'SELECT fromid, time, text FROM comment WHERE post_id="' + postID + '"',
+        people: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (SELECT fromid FROM #comments)'
+      }
+  },
+  function(result) {
+    console.log(result);
+    var comments = result[0].fql_result_set;
+    var people = _.reduce(result[1].fql_result_set, {}, function(d, person) {
+      d[person.id] = person;
+      return d;
+    });
+    cb(comments, people);
+  });
+}
+
+
 // TODO - probably need to parameterize things in query at some point
 function getStream(cb) {
   if(start) start();

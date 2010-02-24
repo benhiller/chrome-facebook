@@ -4,10 +4,9 @@ This branch uses Facebook Connect and will eventually replace the current versio
 
 TODO:
   Improve handling of swf/video attchs
-  Make comment/like show up in list after commenting
+  Make like show up in list after commenting
   Implement caching for data (don't call API everytime user opens popup)
-  Implement 'view all comments/likes'
-  Get nice logout icon
+  Implement 'view all likes'
   Create nice instruction success page after connecting (and improve welcome screen for ext)
   Implement notification updating, and notification tab
   Implement refresh for wall, notificaitons

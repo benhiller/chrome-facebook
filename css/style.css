@@ -24,6 +24,10 @@ a, span.a {
   cursor: pointer;
 }
 
+span.a:hover {
+  text-decoration: underline;
+}
+
 button {
   cursor: pointer;
   font-weight: bold;
@@ -453,4 +457,9 @@ span.comment-submit button {
 #logout-btn span:active {
   background-image: none;
   background-color: #CCC;
+}
+
+.show-more-comments {
+  font-size: 11px;
+  border-top: 2px solid #E6EAF2;
 }
