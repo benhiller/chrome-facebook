@@ -102,9 +102,38 @@ function processPost(post, people) {
           media.append('<a href="'+medium.href+'"><img src="'+medium.src+'"> </img></a>');
           break;
         case "video":
+          // Sample
+          //    0: Object
+          //      alt: "Modern Family "In The Moonlight (Do Me)" Music Video"
+          //      href: "http://www.facebook.com/l.php?u=http%253A%252F%252Fwww.youtube.com%252Fwatch%253Fv%253D66TqUyjqM40&h…"
+          //      src: "http://external.ak.fbcdn.net/safe_image.php?d=6e8849bb62d2d1d0f88612f00db9e42b&w=90&h=90&url=http%3A…"
+          //      type: "video"
+          //      video: Object
+          //        display_url: "http://www.youtube.com/watch?v=66TqUyjqM40"
+          //        owner: 1602720005
+          //        permalink: "http://www.facebook.com/profile.php?v=feed&story_fbid=324744676650&id=1515120004"
+          //        source_type: "html"
+          //        source_url: "http://www.youtube.com/v/66TqUyjqM40&autoplay=1"
           // TODO Will it always have href and src?
           media.append('<a href="'+medium.href+'"><img src="'+medium.src+'"> </img></a>');
           break;
+        case "swf":
+          // Sample:
+          //    0: Object
+          //      alt: ""
+          //      href: "http://www.facebook.com/"
+          //      src: "http://platform.ak.fbcdn.net/www/app_full_proxy.php?app=24320081510&v=1&size=p&cksum=a9b0c5a4e10ac83…"
+          //      swf: Object
+          //        flash_vars: ""
+          //        height: "90"
+          //        preview_img: "http://platform.ak.fbcdn.net/www/app_full_proxy.php?app=24320081510&v=1&size=p&cksum=a9b0c5a4e10ac83…"
+          //        source_url: "http://www.lala.com/external/flash/PlaylistWidget.swf?host=www.lala.com&autoPlay=true&partnerId=fbco…"
+          //        width: "90"
+          //      type: "swf"
+          // Not ideal, would want to behave like on facebook,
+          media.append('<a href="'+medium.swf.source_url+'"><img src="'+medium.swf.preview_img+'"> </img></a>');
+          break;
+
         // Fill in more cases here
       }
     });
