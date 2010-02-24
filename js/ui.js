@@ -79,7 +79,7 @@ function processPost(post, people) {
   var urls = text.match(/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/gi);
   if(urls !== null) {
     for(var j = 0; j < urls.length; j++) {
-      text = text.replace(urls[j], '<a href="' + urls[j]+ '">'+urls[j] + '</a>"');
+      text = text.replace(urls[j], '<a href="' + urls[j]+ '">'+urls[j] + '</a>');
     }
   }
   message.append(text);
