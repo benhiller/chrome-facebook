@@ -7,8 +7,8 @@ function logout() {
   background.logout();
 }
 
-function submitComment(postID, comment) {
-  background.addComment(postID, comment, function(r) { console.log(r); } );
+function submitComment(postID, comment, cb) {
+  background.addComment(postID, comment, function(r) { console.log(r); cb(); } );
 }
 
 function submitStatus(status, cb) {
