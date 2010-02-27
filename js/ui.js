@@ -40,11 +40,24 @@ function showStream(posts, people) {
   $('#stream').empty();
   $('#stream').show();
   _.each(posts, function(post) {
-    processPost(post, idToPerson);
+    processPost(post, idToPerson, $('#stream'));
   });
 }
 
-function processPost(post, people) {
+function showWall(posts, people) {
+  var idToPerson = _.reduce(people, {}, function(pplDict, person) {
+    pplDict[person.id] = person;
+    return pplDict;
+  });
+  console.log(posts, idToPerson);
+  $('#wall').empty();
+  $('#wall').show();
+  _.each(posts, function(post) {
+    processPost(post, idToPerson, $('#wall'));
+  });
+}
+
+function processPost(post, people, area) {
   var actor = people[post.actor_id];
   var target;
   if(post.target_id != null) {
@@ -209,7 +222,7 @@ function processPost(post, people) {
 
   var dummy = $('<div class="dummy"></div>');
   result.append(dummy);
-  $('#stream').append(result);
+  area.append(result);
 }
 
 function initEvents() {
@@ -239,9 +252,38 @@ function initEvents() {
     animateRefresh();
   });
 
+  $('#items li:not(.selected)').live('click', function() {
+      var content = $($(this).data('content'));
+      $($('#items li.selected').data('content')).slideUp().hide();
+      content.slideDown();
+      $('#items li.selected').removeClass('selected');
+      $(this).addClass('selected');
+      if(content.hasClass('empty')) {
+        ($(this).data('init'))();
+        content.removeClass('empty');
+      }
+  });
 
-  $('#stream-btn.selected').live('click', function() {
+  $('#stream-btn').data('refresh', function() {
     refreshStream(animateRefresh, stopAnimatingRefresh);
+  }).data('init', function() {
+    getStream();
+  }).data('content', '#stream');
+
+  $('#wall-btn').data('refresh', function() {
+    refreshWall(animateRefresh, stopAnimatingRefresh);
+  }).data('init', function() {
+    getWall();
+  }).data('content', '#wall');
+
+  $('#notifications-btn').data('refresh', function() {
+    refreshNotifications(animateRefresh, stopAnimatingRefresh);
+  }).data('init', function() {
+    getNotifications();
+  }).data('content', '#notifications');
+
+  $('#items li.selected.tab').live('click', function() {
+    ($(this).data('refresh'))();
   });
 
   $('.post-comment textarea').live('focus', function() {

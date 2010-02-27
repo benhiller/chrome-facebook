@@ -7,12 +7,8 @@ $(document).ready(function() {
     background.onLogin(function() {
       showActiveIcon();
       hideLogin();
-      background.getProfilePic(function(url) {
-        showProfilePic(url);
-      });
-      background.getStream(function(posts, people) {
-        showStream(posts, people);
-      });
+      getProfilePic();
+      getStream();
       showComposer();
     });
 

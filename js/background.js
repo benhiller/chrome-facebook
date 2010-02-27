@@ -7,16 +7,12 @@ function login(session) {
   localStorage.session = JSON.stringify(session);
   localStorage.logged_in = 'true';
   FB.Auth.setSession(session, 'connected');
-  // FB.init({ apiKey: apiKey, session: session, status: true });
 }
 
 function logout() {
   setupProcess = 0;
   localStorage.logged_in = 'false';
   FB.Auth.setSession(null, 'notConnected');
-  //FB.logout(function(result) {
-    // TODO - Make sure it worked?
-  //});
 }
 
 function onLogin(cb) {
@@ -105,13 +101,12 @@ function getAllComments(postID, cb) {
 }
 
 
-// TODO - probably need to parameterize things in query at some point
-function getStream(cb) {
+function getStream(cond, cb) {
   if(start) start();
   FB.api({
     method: 'fql.multiquery',
     queries:
-      { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE filter_key="nf" AND is_hidden = 0',
+      { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE ' + cond + ' LIMIT 30',
         people: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (SELECT actor_id FROM #news_feed) OR id IN (SELECT target_id FROM #news_feed)'
       }
   },
@@ -210,4 +205,9 @@ function setStart(cb) {
 
 function setEnd(cb) {
   end = cb;
+}
+
+function uid() {
+  // Assumed to only be called when logged in
+  return FB.getSession().uid;
 }
