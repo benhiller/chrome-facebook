@@ -31,6 +31,26 @@ function removeStream() {
   $('#stream').empty();
 }
 
+function showNotifications(notifications, apps) {
+  console.log(notifications, apps);
+  $('#notifications').empty();
+  $('#notifications').show();
+  _.each(notifications, function(notification) {
+    processNotification(notification, apps[notification.app_id]);
+  });
+}
+
+function processNotification(notification, app) {
+  var notif = $('<li></li>');
+  var text = $('<span class="notif-text"></span>');
+  text.append(notification.title_html);
+  notif.append(text).css('background-image', 'url('+app.icon_url+')');
+  if(notification.is_unread) {
+    notif.addClass('unread');
+  }
+  $('#notifications').append(notif);
+}
+
 function showStream(posts, people) {
   var idToPerson = _.reduce(people, {}, function(pplDict, person) {
     pplDict[person.id] = person;

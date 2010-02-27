@@ -100,6 +100,27 @@ function getAllComments(postID, cb) {
   });
 }
 
+function getNotifications(cb) {
+  if(start) start();
+  FB.api({
+    method: 'fql.multiquery',
+    queries:
+      { notifications: 'SELECT title_html, app_id, created_time, is_unread FROM notification WHERE is_hidden = 0 AND recipient_id=' + uid(),
+        apps: 'SELECT app_id, icon_url FROM application WHERE app_id IN (SELECT app_id FROM #notifications)'
+      }
+  },
+  function(result) {
+    var notifications = result[0].fql_result_set;
+    var appsArray = result[1].fql_result_set;
+    var apps = _.reduce(appsArray, {}, function(appDict, app) {
+      appDict[app.app_id] = app;
+      return appDict;
+    });
+    if(end) end();
+    cb(notifications, apps);
+  });
+}
+
 
 function getStream(cond, cb) {
   if(start) start();

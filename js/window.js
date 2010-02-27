@@ -34,6 +34,22 @@ function refreshStream(start, end) {
   });
 }
 
+function refreshWall(start, end) {
+  background.setStart(start);
+  background.setEnd(end);
+  background.getStream(wallCond + background.uid(), function(posts, people) {
+    showWall(posts, people);
+  });
+}
+
+function refreshNotifications(start, end) {
+  background.setStart(start);
+  background.setEnd(end);
+  background.getNotifications(function(posts, apps) {
+    showNotifications(posts, apps);
+  });
+}
+
 function getAllComments(post, postID) {
   background.getAllComments(postID, function(comments, people) {
     showAllComments(post, comments, people);
@@ -57,3 +73,11 @@ function getWall() {
     showWall(posts, people);
   });
 }
+
+function getNotifications() {
+  background.getNotifications(function(posts, apps) {
+    showNotifications(posts, apps);
+  });
+}
+
+

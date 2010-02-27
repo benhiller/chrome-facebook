@@ -8,8 +8,6 @@ TODO:
   Implement 'view all likes'
   Create nice instruction success page after connecting (and improve welcome screen for ext)
   Implement notification updating, and notification tab
-  Implement refresh for wall, notificaitons
-  Implement wall
 
 Later:
   Improve handling of swf/video attchs

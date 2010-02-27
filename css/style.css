@@ -470,3 +470,17 @@ span.comment-submit button {
   font-size: 11px;
   border-top: 2px solid #E6EAF2;
 }
+
+#notifications li {
+  background-repeat: no-repeat;
+}
+
+.notif-text {
+  padding-left: 20px;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+#notifications li.unread {
+  background-color: #FFFBC4;
+}
