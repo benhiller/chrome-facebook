@@ -4,6 +4,7 @@ var end;
 
 var cache = { notifications: { lastUpdated: 0 },
               wall: { lastUpdated: 0 },
+              profilePic: { lastUpdated: 0 },
               stream: { lastUpdated: 0 }};
 
 function login(session) {
@@ -19,6 +20,7 @@ function logout() {
   // Clear the cache
   cache = { notifications: { lastUpdated: 0 },
             wall: { lastUpdated: 0 },
+            profilePic: { lastUpdated: 0 },
             stream: { lastUpdated: 0 }};
   FB.Auth.setSession(null, 'notConnected');
 }
@@ -270,13 +272,19 @@ function checkNotifications() {
 }
 
 function getProfilePic(cb) {
-  FB.api({
-    method: 'fql.query', query: 'SELECT pic_square FROM profile WHERE id=' + FB.getSession().uid
-  },
-  function(result) {
-    console.log(result);
-    cb(result[0].pic_square);
-  });
+  if(cache.profilePic.lastUpdated == 0) {
+    FB.api({
+      method: 'fql.query', query: 'SELECT pic_square FROM profile WHERE id=' + FB.getSession().uid
+    },
+    function(result) {
+      console.log(result);
+      cache.profilePic.url = result[0].pic_square;
+      cache.profilePic.lastUpdated = (new Date()).valueOf();
+      cb(result[0].pic_square);
+    });
+  } else {
+    cb(cache.profilePic.url);
+  }
 }
 
 function setStart(cb) {

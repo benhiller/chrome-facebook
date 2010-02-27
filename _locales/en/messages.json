@@ -27,24 +27,48 @@
     "message": "Like",
     "description": "Like verb."
   },
-  "photoStory": {
-    "message": " was tagged in a photo.",
-    "description": "Text that appears after the name of someone tagged in a photo."
-  },
-  "albumStory": {
-    "message": " was tagged in an album.",
-    "description": "Text that appears after the name of someone tagged in an album."
-  },
-  "videoStory": {
-    "message": " was tagged in a video.",
-    "description": "Text that appears after the name of someone tagged in a video."
-  },
   "error": {
-    "message": "To use the Facebook for Chrome extension, please login to <a href=\"http://facebook.com\">Facebook</a> first.",
-    "description": "Error message displayed when user not logged into Facebook."
+    "message": "Sorry, your login did not work, please try again.",
+    "description": "Error message displayed when login did not work"
   },
   "statusWidth": {
     "message": "257px",
     "description": "How big a textarea can we fit?"
+  },
+  "logout": {
+    "message": "Logout",
+    "description": "Text that goes in button to logout"
+  },
+  "likesThis": {
+    "message": "likes this.",
+    "description": "Text that appears next to the name of whomever likes a post"
+  },
+  "likeThis": {
+    "message": "like this.",
+    "description": "Text that appears next to the name of whoever likes a post"
+  },
+  "someone": {
+    "message": "Someone",
+    "description": "Text that appears before indication someone likes a post"
+  },
+  "commentFiller": {
+    "message": "Write a comment...",
+    "description": "Message imploring user to leave comment"
+  },
+  "loginButton": {
+    "message": "Login to Facebook",
+    "description": "Message asking users to login"
+  },
+  "intro": {
+    "message": "The updated Facebook for Google Chrome now uses Facebook Connect. To get started, click below:",
+    "description": "Message explaining connect to users"
+  },
+  "viewAll": {
+    "message": "View all ",
+    "description": "View all.."
+  },
+  "comments": {
+    "message": " comments",
+    "description": "comments"
   }
 }

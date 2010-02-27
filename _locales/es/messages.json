@@ -1,51 +1,56 @@
 {
   "extName": {
-    "message": "Facebook para Google Chrome",
-    "description": "Extension name."
+    "message": "Facebook para Google Chrome"
   },
   "extDesc": {
-    "message": "De extensión que le permite leer el feed de noticias de Facebook y la pared. También puede publicar actualizaciones de estado.",
-    "description": "Description of extension."
+    "message": "De extensión que le permite leer el feed de noticias de Facebook y la pared. También puede publicar actualizaciones de estado."
   },
   "statusFiller": {
-    "message": "¿Qué estás pensando?",
-    "description": "Text inviting a user to post a status."
+    "message": "¿Qué estás pensando?"
   },
   "comment": {
-    "message": "Comentar",
-    "description": "Comment verb."
+    "message": "Comentar"
   },
   "share": {
-    "message": "Compartir",
-    "description": "Share verb."
+    "message": "Compartir"
   },
   "unlike": {
-    "message": "Ya no me gusta",
-    "description": "Verb to remove your liking of a post."
+    "message": "Ya no me gusta"
   },
   "like": {
-    "message": "Me gusta",
-    "description": "Like verb."
-  },
-  "photoStory": {
-    "message": "  ha sido etiquetado en una foto.",
-    "description": "Text that appears after the name of someone tagged in a photo."
-  },
-  "albumStory": {
-    "message": " ha sido etiquetado en un álbum.",
-    "description": "Text that appears after the name of someone tagged in an album."
-  },
-  "videoStory": {
-    "message": " ha sido etiquetado en un vídeo.",
-    "description": "Text that appears after the name of someone tagged in a video."
+    "message": "Me gusta"
   },
   "error": {
-    "message": "Para utilizar el Facebook para la extensión Chrome, por favor acceda a <a href=\"http://facebook.com\">Facebook</a> en primer lugar.",
-    "description": "Error message displayed when user not logged into Facebook."
+    "message": "Lo sentimos, su nombre de usuario no funciona, por favor, inténtelo de nuevo."
   },
   "statusWidth": {
-    "message": "225px",
-    "description": "How big a textarea can we fit?"
+    "message": "225px"
+  },
+  "logout": {
+    "message": "Salir"
+  },
+  "likesThis": {
+    "message": " les gusta esto."
+  },
+  "likeThis": {
+    "message": " le gusta esto."
+  },
+  "someone": {
+    "message": "Alguien"
+  },
+  "commentFiller": {
+    "message": "Escribe un comentario..."
+  },
+  "loginButton": {
+    "message": "Conectar"
+  },
+  "intro": {
+    "message": "La actualización de Facebook para Google Chrome ahora usa Facebook Connect. Para empezar, haga clic a continuación:"
+  },
+  "viewAll": {
+    "message": "Ver todos "
+  },
+  "comments": {
+    "message": " comentarios"
   }
-
 }

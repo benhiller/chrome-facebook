@@ -193,16 +193,16 @@ function processPost(post, people, area) {
   actions.append(time);
 
   if(post.comments.can_post) {
-    var comment = $('<span class="a comment-btn">Comment</span>')
+    var comment = $('<span class="a comment-btn">' + commentText + '</span>')
     actions.append(' &#183; ').append(comment);
   }
 
   if(post.likes.can_like) {
     var like = $('<span class="a like-btn"></span>');
     if(post.likes.user_likes) {
-      like.append('Unlike');
+      like.append(unlikeText);
     } else {
-      like.append('Like');
+      like.append(likeText);
     }
     actions.append(' &#183; ').append(like);
   }
@@ -219,16 +219,16 @@ function processPost(post, people, area) {
         if(liker.name !== '') {
           likes.append('<a href="'+liker.url+'">'+liker.name+'</a>');
         } else {
-          likes.append('<span class="a">Someone</a>');
+          likes.append('<span class="a">' + someoneText + '</a>');
         }
       }
       if(post.likes.count == 1) {
-        likes.append(' likes this.');
+        likes.append(likesThisText);
       } else {
-        likes.append(' like this.');
+        likes.append(likeThisText);
       }
     } else {
-      likes.append('Someone likes this');
+      likes.append(someoneText + likesThisText);
     }
     feedback.append(likes);
   }
@@ -254,13 +254,19 @@ function initEvents() {
     logout();
   });
 
+  $('#logout-btn span button').text(logoutText);
+
+  $('#login-text').text(loginButtonText);
+  $('#intro').text(introText);
+  $('#error').text(errorText);
+
   $('#composer-area').focus(function() {
-    if($(this).val() == "What's on your mind?") {
+    if($(this).val() == statusFillerText) {
       $(this).css('color', '#000').val('');
     }
   }).focusout(function() {
     if($(this).val() == '') {
-      $(this).css('color', '#9C9C9C').val("What's on your mind?");
+      $(this).css('color', '#9C9C9C').val(statusFillerText);
     }
   });
 
@@ -307,14 +313,16 @@ function initEvents() {
   });
 
   $('.post-comment textarea').live('focus', function() {
-    if($(this).val() == "Write a comment...") {
+    if($(this).val() == commentFillerText) {
       $(this).css('color', '#000').val('');
     }
   }).live('focusout', function() {
     if($(this).val() == '') {
-      $(this).css('color', '#9C9C9C').val('Write a comment...');
+      $(this).css('color', '#9C9C9C').val(commentFillerText);
     }
   });
+
+  $('#composer-area').css('width', chrome.i18n.getMessage('statusWidth'));
 
   $('.comment-submit').live('click', function() {
     var post = $(this).parents('li.story');
@@ -326,12 +334,18 @@ function initEvents() {
 
   $('#composer-submit').click(function() {
       // Submit status
+      if($('#composer textarea').val() == "What's on your mind?") {
+        return;
+      }
       submitStatus($('#composer textarea').val(),
       function() {
         refreshStream(animateRefresh, stopAnimatingRefresh);
       });
       $('#composer textarea').val('').focusout();
   });
+
+  $('#composer textarea').val(statusFillerText);
+  $('#composer-submit').text(shareText);
 
   $('a').live('click', function() {
     chrome.tabs.create({ url: $(this).attr('href') });
@@ -372,7 +386,7 @@ function showAndSelectCommentBox(post) {
   if(post.find('.post-comment').length == 0) {
     commentBox = $('<li class="post-comment"></li>');
     commentBox.append('<textarea rows="2"></textarea')
-              .append('<span class="blue-btn comment-submit"><button>Comment</button></span>');
+              .append('<span class="blue-btn comment-submit"><button>' + commentText + '</button></span>');
     post.find('.comments').append(commentBox);
   } else {
     commentBox = post.find('.post-comment');
@@ -385,12 +399,12 @@ function removeCommentBox(post) {
 }
 
 function likeStory(post) {
-  if(post.find('.like-btn').text() == 'Like') {
+  if(post.find('.like-btn').text() == likeText) {
     submitLike(post.data('post_id'));
-    post.find('.like-btn').text('Unlike');
+    post.find('.like-btn').text(unlikeText);
   } else {
     removeLike(post.data('post_id'));
-    post.find('.like-btn').text('Like');
+    post.find('.like-btn').text(likeText);
   }
 }
 
@@ -425,11 +439,11 @@ function renderComments(commentsObj, people) {
   } else if(isArray(commentsObj.comment_list)) {
     comments = commentsObj.comment_list;
     if(commentsObj.count != comments.length) {
-      commentList.append('<li class="show-more-comments"><span class="a">View all '+ commentsObj.count + ' comments</span></li>');
+      commentList.append('<li class="show-more-comments"><span class="a">' + viewAllText + commentsObj.count + commentsText + '</span></li>');
     }
   } else {
     if(commentsObj.count > 0) {
-      commentList.append('<li class="show-more-comments"><span class="a">View all '+ commentsObj.count + ' comments</span></li>');
+      commentList.append('<li class="show-more-comments"><span class="a">' + viewAllText + commentsObj.count + commentsText + '</span></li>');
     }
     // Don't know how to handle this object, probably no comments
     return commentList;
