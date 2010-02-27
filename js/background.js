@@ -247,6 +247,21 @@ function setupLoginLogoutHandlers() {
 }
 
 function checkNotifications() {
+  getNotifications(true, function(notifications, apps) {
+    console.log('updating notifications');
+    var count = 0;
+    for(var i = 0; i < notifications.length; i++) {
+      if(notifications[i].is_unread) {
+        count++;
+      }
+    }
+    if(count != 0) {
+      chrome.browserAction.setBadgeText({text: count + ""});
+    } else {
+      chrome.browserAction.setBadgeText({text: ""});
+    }
+  });
+
   setTimeout("checkNotifications()", refreshTime);
 }
 
