@@ -16,6 +16,10 @@ function login(session) {
 function logout() {
   setupProcess = 0;
   localStorage.logged_in = 'false';
+  // Clear the cache
+  cache = { notifications: { lastUpdated: 0 },
+            wall: { lastUpdated: 0 },
+            stream: { lastUpdated: 0 }};
   FB.Auth.setSession(null, 'notConnected');
 }
 
