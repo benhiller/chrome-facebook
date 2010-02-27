@@ -2,16 +2,17 @@ Facebook for Google Chrome extension
 
 This branch uses Facebook Connect and will eventually replace the current version. Connect makes it much easier to add more functionality, (ex: notifications, inbox), and is a much cleaner interface.
 
-TODO:
-  Make like show up in list after commenting
-  Implement caching for data (don't call API everytime user opens popup)
-  Implement 'view all likes'
-  Create nice instruction success page after connecting (and improve welcome screen for ext)
-  Implement notification updating, and notification tab
+TODO before release:
+  1. Implement caching for data (don't call API everytime user opens popup)
+  2. Implement notification updating
+  3. Make like show up in list after commenting
+  4. Create nice instruction success page after connecting
 
-Later:
+Later versions:
+  Implement 'view all likes'
   Improve handling of swf/video attchs
   Inbox
   Publishing attacments (sites) via extension
 
-getLoginStatus does NOT work
+Note:
+  FB.getLoginStatus() does NOT work, due to using js connect lib in chrome extension

@@ -12,4 +12,4 @@ var loginURL = 'http://www.facebook.com/login.php?api_key=' + apiKey +
                 '&next=' + successURL +
                 '&cancel_url=' + cancelURL +
                 '&req_perms=' + permissions;
-
+var refreshTime = 1000 * 5 * 60;

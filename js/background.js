@@ -2,6 +2,10 @@ var setupProcess = 0;
 var start;
 var end;
 
+var cache = { notifications: { lastUpdated: 0 },
+              wall: { lastUpdated: 0 },
+              stream: { lastUpdated: 0 }};
+
 function login(session) {
   setupProcess = 2;
   localStorage.session = JSON.stringify(session);
@@ -100,69 +104,99 @@ function getAllComments(postID, cb) {
   });
 }
 
-function getNotifications(cb) {
+function getNotifications(refresh, cb) {
   if(start) start();
-  FB.api({
-    method: 'fql.multiquery',
-    queries:
-      { notifications: 'SELECT title_html, app_id, created_time, is_unread FROM notification WHERE is_hidden = 0 AND recipient_id=' + uid(),
-        apps: 'SELECT app_id, icon_url FROM application WHERE app_id IN (SELECT app_id FROM #notifications)'
-      }
-  },
-  function(result) {
-    var notifications = result[0].fql_result_set;
-    var appsArray = result[1].fql_result_set;
-    var apps = _.reduce(appsArray, {}, function(appDict, app) {
-      appDict[app.app_id] = app;
-      return appDict;
+  if(refresh || (!refresh && (new Date()).valueOf() - cache.notifications.lastUpdated > refreshTime)) {
+    FB.api({
+      method: 'fql.multiquery',
+      queries:
+        { notifications: 'SELECT title_html, app_id, created_time, is_unread FROM notification WHERE is_hidden = 0 AND recipient_id=' + uid(),
+          apps: 'SELECT app_id, icon_url FROM application WHERE app_id IN (SELECT app_id FROM #notifications)'
+        }
+    },
+    function(result) {
+      var notifications = result[0].fql_result_set;
+      var appsArray = result[1].fql_result_set;
+      var apps = _.reduce(appsArray, {}, function(appDict, app) {
+        appDict[app.app_id] = app;
+        return appDict;
+      });
+      cache.notifications.lastUpdated = (new Date()).valueOf();
+      cache.notifications.notifications = notifications;
+      cache.notifications.apps = apps;
+      if(end) end();
+      cb(notifications, apps);
     });
+  } else {
     if(end) end();
-    cb(notifications, apps);
-  });
+    cb(cache.notifications.notifications, cache.notifications.apps);
+  }
 }
 
 
-function getStream(cond, cb) {
+function getStream(refresh, stream, cb) {
   if(start) start();
-  FB.api({
-    method: 'fql.multiquery',
-    queries:
-      { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE ' + cond + ' LIMIT 30',
-        people: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (SELECT actor_id FROM #news_feed) OR id IN (SELECT target_id FROM #news_feed)'
-      }
-  },
-  function(result) {
-    console.log(result);
-    var posts = result[0].fql_result_set;
-    var uids = _.reduce(posts, [], function(ids, p) {
-      ids = ids.concat(_.map(p.comments.comment_list, function (c) { return c.fromid; }));
-      if(p.likes.can_like && p.likes.sample.length > 0)
-        ids = ids.concat(p.likes.sample);
-      return _.uniq(ids);
-    });
-
-    var people = _.reduce(result[1].fql_result_set, {}, function(d, person) {
-      d[person.id] = person;
-      return d;
-    });
-
-
+  var cond = stream ? 'filter_key="nf" AND is_hidden = 0' : 'source_id='+uid();
+  if(refresh || (!refresh &&
+      (stream && (new Date()).valueOf() - cache.stream.lastUpdated > refreshTime)
+    || (!stream && (new Date()).valueOf() - cache.wall.lastUpdated > refreshTime)
+)) {
     FB.api({
-      method: 'fql.query',
-      query: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (' + uids + ')'
+      method: 'fql.multiquery',
+      queries:
+        { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE ' + cond + ' LIMIT 30',
+          people: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (SELECT actor_id FROM #news_feed) OR id IN (SELECT target_id FROM #news_feed)'
+        }
     },
-    function(more_people) {
-      more_people = _.reduce(more_people, {}, function(d, person) {
+    function(result) {
+      console.log(result);
+      var posts = result[0].fql_result_set;
+      var uids = _.reduce(posts, [], function(ids, p) {
+        ids = ids.concat(_.map(p.comments.comment_list, function (c) { return c.fromid; }));
+        if(p.likes.can_like && p.likes.sample.length > 0)
+          ids = ids.concat(p.likes.sample);
+        return _.uniq(ids);
+      });
+
+      var people = _.reduce(result[1].fql_result_set, {}, function(d, person) {
         d[person.id] = person;
         return d;
       });
-      for(var id in more_people) {
-        people[id] = more_people[id];
-      }
-      if(end) end();
-      cb(posts, people);
+
+
+      FB.api({
+        method: 'fql.query',
+        query: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (' + uids + ')'
+      },
+      function(more_people) {
+        more_people = _.reduce(more_people, {}, function(d, person) {
+          d[person.id] = person;
+          return d;
+        });
+        for(var id in more_people) {
+          people[id] = more_people[id];
+        }
+        if(stream) {
+          cache.stream.lastUpdated = (new Date()).valueOf();
+          cache.stream.posts = posts;
+          cache.stream.people = people;
+        } else {
+          cache.wall.lastUpdated = (new Date()).valueOf();
+          cache.wall.posts = posts;
+          cache.wall.people = people;
+        }
+        if(end) end();
+        cb(posts, people);
+      });
     });
-  });
+  } else {
+    if(end) end();
+    if(stream) {
+      cb(cache.stream.posts, cache.stream.people);
+    } else {
+      cb(cache.wall.posts, cache.wall.people);
+    }
+  }
 }
 
 function checkForSuccessPage() {
@@ -208,6 +242,12 @@ function setupLoginLogoutHandlers() {
   onLogin(function() {
     showActiveIcon();
   });
+
+  setTimeout("checkNotifications()", refreshTime);
+}
+
+function checkNotifications() {
+  setTimeout("checkNotifications()", refreshTime);
 }
 
 function getProfilePic(cb) {

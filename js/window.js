@@ -1,6 +1,3 @@
-var newsFeedCond = 'filter_key="nf" AND is_hidden = 0';
-var wallCond = 'source_id = ';
-
 function loginAttempt() {
   background.setupProcess = 1;
   chrome.tabs.create({ url: loginURL });
@@ -29,7 +26,7 @@ function removeLike(postID) {
 function refreshStream(start, end) {
   background.setStart(start);
   background.setEnd(end);
-  background.getStream(newsFeedCond, function(posts, people) {
+  background.getStream(true, true, function(posts, people) {
     showStream(posts, people);
   });
 }
@@ -37,7 +34,7 @@ function refreshStream(start, end) {
 function refreshWall(start, end) {
   background.setStart(start);
   background.setEnd(end);
-  background.getStream(wallCond + background.uid(), function(posts, people) {
+  background.getStream(true, false, function(posts, people) {
     showWall(posts, people);
   });
 }
@@ -45,7 +42,7 @@ function refreshWall(start, end) {
 function refreshNotifications(start, end) {
   background.setStart(start);
   background.setEnd(end);
-  background.getNotifications(function(posts, apps) {
+  background.getNotifications(true, function(posts, apps) {
     showNotifications(posts, apps);
   });
 }
@@ -63,19 +60,19 @@ function getProfilePic() {
 }
 
 function getStream() {
-  background.getStream(newsFeedCond, function(posts, people) {
+  background.getStream(false, true, function(posts, people) {
     showStream(posts, people);
   });
 }
 
 function getWall() {
-  background.getStream(wallCond + background.uid(), function(posts, people) {
+  background.getStream(false, false, function(posts, people) {
     showWall(posts, people);
   });
 }
 
 function getNotifications() {
-  background.getNotifications(function(posts, apps) {
+  background.getNotifications(false, function(posts, apps) {
     showNotifications(posts, apps);
   });
 }
