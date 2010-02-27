@@ -281,6 +281,9 @@ function initEvents() {
   $('#items li:not(.selected)').live('click', function() {
       var content = $($(this).data('content'));
       $($('#items li.selected').data('content')).slideUp().hide();
+      $('#items li.button').each(function() {
+        $($(this).data('content')).hide();
+      });
       content.slideDown();
       $('#items li.selected').removeClass('selected');
       $(this).addClass('selected');
@@ -304,8 +307,10 @@ function initEvents() {
 
   $('#notifications-btn').data('refresh', function() {
     refreshNotifications(animateRefresh, stopAnimatingRefresh);
+    markNotificationsAsRead();
   }).data('init', function() {
     getNotifications();
+    markNotificationsAsRead();
   }).data('content', '#notifications');
 
   $('#items li.selected.tab').live('click', function() {

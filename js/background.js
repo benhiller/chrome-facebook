@@ -1,6 +1,7 @@
 var setupProcess = 0;
 var start;
 var end;
+var timeout;
 
 var cache = { notifications: { lastUpdated: 0 },
               wall: { lastUpdated: 0 },
@@ -116,7 +117,7 @@ function getNotifications(refresh, cb) {
     FB.api({
       method: 'fql.multiquery',
       queries:
-        { notifications: 'SELECT title_html, app_id, created_time, is_unread FROM notification WHERE is_hidden = 0 AND recipient_id=' + uid(),
+        { notifications: 'SELECT notification_id, title_html, app_id, created_time, is_unread FROM notification WHERE is_hidden = 0 AND recipient_id=' + uid(),
           apps: 'SELECT app_id, icon_url FROM application WHERE app_id IN (SELECT app_id FROM #notifications)'
         }
     },
@@ -249,10 +250,11 @@ function setupLoginLogoutHandlers() {
     showActiveIcon();
   });
 
-  setTimeout("checkNotifications()", refreshTime);
+  checkNotifications();
 }
 
 function checkNotifications() {
+  if(isLoggedIn()) {
   getNotifications(true, function(notifications, apps) {
     console.log('updating notifications');
     var count = 0;
@@ -267,8 +269,9 @@ function checkNotifications() {
       chrome.browserAction.setBadgeText({text: ""});
     }
   });
+  }
 
-  setTimeout("checkNotifications()", refreshTime);
+  timeout = setTimeout("checkNotifications()", refreshTime);
 }
 
 function getProfilePic(cb) {
@@ -298,4 +301,15 @@ function setEnd(cb) {
 function uid() {
   // Assumed to only be called when logged in
   return FB.getSession().uid;
+}
+
+function markNotificationsAsRead(ids) {
+  FB.api({
+    method: 'notifications.markRead',
+    notification_ids: ids
+  }, function(result) {
+    console.log(result);
+    clearTimeout(timeout);
+    checkNotifications();
+  });
 }
