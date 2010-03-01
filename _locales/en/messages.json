@@ -40,11 +40,11 @@
     "description": "Text that goes in button to logout"
   },
   "likesThis": {
-    "message": "likes this.",
+    "message": " likes this.",
     "description": "Text that appears next to the name of whomever likes a post"
   },
   "likeThis": {
-    "message": "like this.",
+    "message": " like this.",
     "description": "Text that appears next to the name of whoever likes a post"
   },
   "someone": {

@@ -254,7 +254,7 @@ function initEvents() {
     logout();
   });
 
-  $('#logout-btn span button').text(logoutText);
+  $('#logout-btn span button').val(logoutText);
 
   $('#login-text').text(loginButtonText);
   $('#intro').text(introText);
