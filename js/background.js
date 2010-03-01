@@ -111,8 +111,8 @@ function getAllComments(postID, cb) {
   });
 }
 
-function getNotifications(refresh, cb) {
-  if(start) start();
+function getNotifications(refresh, active, cb) {
+  if(active && start) start();
   if(refresh || (!refresh && (new Date()).valueOf() - cache.notifications.lastUpdated > refreshTime)) {
     FB.api({
       method: 'fql.multiquery',
@@ -131,11 +131,11 @@ function getNotifications(refresh, cb) {
       cache.notifications.lastUpdated = (new Date()).valueOf();
       cache.notifications.notifications = notifications;
       cache.notifications.apps = apps;
-      if(end) end();
+      if(active && end) end();
       cb(notifications, apps);
     });
   } else {
-    if(end) end();
+    if(active && end) end();
     cb(cache.notifications.notifications, cache.notifications.apps);
   }
 }
@@ -255,7 +255,7 @@ function setupLoginLogoutHandlers() {
 
 function checkNotifications() {
   if(isLoggedIn()) {
-  getNotifications(true, function(notifications, apps) {
+  getNotifications(true, false, function(notifications, apps) {
     console.log('updating notifications');
     var count = 0;
     for(var i = 0; i < notifications.length; i++) {

@@ -42,7 +42,7 @@ function refreshWall(start, end) {
 function refreshNotifications(start, end) {
   background.setStart(start);
   background.setEnd(end);
-  background.getNotifications(true, function(posts, apps) {
+  background.getNotifications(true, true, function(posts, apps) {
     showNotifications(posts, apps);
   });
 }
@@ -72,13 +72,13 @@ function getWall() {
 }
 
 function getNotifications() {
-  background.getNotifications(false, function(posts, apps) {
+  background.getNotifications(false, true, function(posts, apps) {
     showNotifications(posts, apps);
   });
 }
 
 function markNotificationsAsRead() {
-  background.getNotifications(false, function(notifications, apps) {
+  background.getNotifications(false, false, function(notifications, apps) {
     var unreadIds = [];
     for(var i = 0; i < notifications.length; i++) {
       console.log(notifications[i]);
