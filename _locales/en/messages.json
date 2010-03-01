@@ -32,7 +32,7 @@
     "description": "Error message displayed when login did not work"
   },
   "statusWidth": {
-    "message": "257px",
+    "message": "247px",
     "description": "How big a textarea can we fit?"
   },
   "logout": {

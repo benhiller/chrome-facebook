@@ -296,6 +296,7 @@ button {
 }
 
 #composer textarea {
+  font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
   resize: none;
   font-size: 13px;
   width: 257px;
@@ -369,7 +370,7 @@ span.login-btn {
   background-color: #29447E;
   background-image: url(../images/connect_sprite.png);
   display: inline-block;
-  width: 140px;
+  width: 150px;
   font-size: 11px;
   padding-left: 1px;
   background-position: 0% -188px;
