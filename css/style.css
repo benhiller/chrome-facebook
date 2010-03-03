@@ -282,9 +282,9 @@ button {
 }
 
 .post-comment textarea {
-  width: 274px;
+  width: 271px;
   margin-top: 3px;
-  margin-left: 0px;
+  margin-left: -1px;
   border: 1px solid #BDC7D8;
   resize: none;
 }
