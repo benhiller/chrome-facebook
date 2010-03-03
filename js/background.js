@@ -52,7 +52,6 @@ function publish(status, cb) {
   FB.api({
     method: 'stream.publish',
     message: status,
-    // action_links: [{text: 'Dislike', href: 'localhost'}] // April fools joke?
   }, function(result) {
     console.log(result);
     cb(result);
