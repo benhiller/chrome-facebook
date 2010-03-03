@@ -103,3 +103,7 @@ function markNotificationsAsRead() {
     background.markNotificationsAsRead(unreadIds);
   });
 }
+
+function forceNotificationRefresh() {
+  background.forceNotificationRefresh();
+}

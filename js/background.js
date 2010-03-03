@@ -344,7 +344,11 @@ function markNotificationsAsRead(ids) {
     notification_ids: ids
   }, function(result) {
     console.log(result);
+    forceNotificationRefresh();
+  });
+}
+
+function forceNotificationRefresh() {
     clearTimeout(timeout);
     checkNotificationsAndInbox();
-  });
 }

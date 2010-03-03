@@ -52,6 +52,9 @@ function processThreads(thread, snippet_author) {
 
   var message = $('<div class="message"></div>');
   message.append('<div class="subject"><a href="http://facebook.com/?sk=messages&tid='+thread.thread_id+'">'+thread.subject+'</a></div>');
+  message.find('.subject a').click(function() {
+    setTimeout("forceNotificationRefresh()", 1000);
+  });
   message.append('<a class="name" href="'+snippet_author.url+'">'+snippet_author.name+'</a>');
   message.append('<div class="snippet">'+thread.snippet+'</div>');
   post.append(message);
