@@ -31,6 +31,38 @@ function removeStream() {
   $('#stream').empty();
 }
 
+function showThreads(threads, people) {
+  console.log(threads, people);
+  $('#inbox').empty();
+  $('#inbox').show();
+  _.each(threads, function(thread) {
+    processThreads(thread, people[thread.snippet_author]);
+  });
+}
+
+function processThreads(thread, snippet_author) {
+  var result = $('<li class="story"></li>');
+  if(thread.unread > 0) result.addClass('unread');
+
+  var pic = $('<div class="pic"></div>');
+  pic.append('<a href="'+snippet_author.url+'"><img src="' + snippet_author.pic_square + '"> </img></a>');
+  result.append(pic);
+
+  var post = $('<div class="post"></div>');
+
+  var message = $('<div class="message"></div>');
+  message.append('<div class="subject"><a href="http://facebook.com/?sk=messages&tid='+thread.thread_id+'">'+thread.subject+'</a></div>');
+  message.append('<a class="name" href="'+snippet_author.url+'">'+snippet_author.name+'</a>');
+  message.append('<div class="snippet">'+thread.snippet+'</div>');
+  post.append(message);
+  result.append(post);
+
+  var dummy = $('<div class="dummy"></div>');
+  result.append(dummy);
+
+  $('#inbox').append(result);
+}
+
 function showNotifications(notifications, apps) {
   console.log(notifications, apps);
   $('#notifications').empty();
@@ -44,7 +76,7 @@ function processNotification(notification, app) {
   var notif = $('<li></li>');
   var text = $('<span class="notif-text"></span>');
   text.append(notification.title_html);
-  notif.append(text).css('background-image', 'url('+app.icon_url+')');
+  if(app && app.icon_url) notif.append(text).css('background-image', 'url('+app.icon_url+')');
   if(notification.is_unread) {
     notif.addClass('unread');
   }
@@ -92,7 +124,7 @@ function processPost(post, people, area) {
   // this will be a fairly large (ugly) function
 
   var pic = $('<div class="pic"></div>');
-  pic.append('<img src="' + actor.pic_square + '"> </img>');
+  pic.append('<a href="'+actor.url+'"><img src="' + actor.pic_square + '"> </img></a>');
   result.append(pic);
 
   var content = $('<div class="post"></div>');
@@ -304,6 +336,14 @@ function initEvents() {
   }).data('init', function() {
     getWall();
   }).data('content', '#wall');
+
+  $('#inbox-btn').data('refresh', function() {
+      console.log('a');
+    refreshInbox(animateRefresh, stopAnimatingRefresh);
+  }).data('init', function() {
+    getInbox();
+  }).data('content', '#inbox');
+
 
   $('#notifications-btn').data('refresh', function() {
     refreshNotifications(animateRefresh, stopAnimatingRefresh);

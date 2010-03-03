@@ -2,11 +2,12 @@ var setupProcess = 0;
 var start;
 var end;
 var timeout;
-
-var cache = { notifications: { lastUpdated: 0 },
-              wall: { lastUpdated: 0 },
-              profilePic: { lastUpdated: 0 },
-              stream: { lastUpdated: 0 }};
+var emptyCache = { notifications: { lastUpdated: 0 },
+                   wall: { lastUpdated: 0 },
+                   inbox: { lastUpdated: 0 },
+                   profilePic: { lastUpdated: 0 },
+                   stream: { lastUpdated: 0 }};
+var cache = emptyCache;
 
 function login(session) {
   setupProcess = 2;
@@ -19,10 +20,7 @@ function logout() {
   setupProcess = 0;
   localStorage.logged_in = 'false';
   // Clear the cache
-  cache = { notifications: { lastUpdated: 0 },
-            wall: { lastUpdated: 0 },
-            profilePic: { lastUpdated: 0 },
-            stream: { lastUpdated: 0 }};
+  cache = emptyCache;
   FB.Auth.setSession(null, 'notConnected');
 }
 
@@ -111,6 +109,35 @@ function getAllComments(postID, cb) {
   });
 }
 
+function getInbox(refresh, active, cb) {
+  if(active && start) start();
+  if(refresh || (!refresh && (new Date()).valueOf() - cache.inbox.lastUpdated > refreshTime)) {
+    FB.api({
+      method: 'fql.multiquery',
+      queries:
+        { threads: 'SELECT thread_id, subject, recipients, updated_time, snippet, snippet_author, object_id, unread FROM thread WHERE folder_id = 0 LIMIT 20',
+          people: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (SELECT snippet_author FROM #threads)'
+        }
+    },
+    function(result) {
+      var threads = result[0].fql_result_set;
+      var peopleArray = result[1].fql_result_set;
+      var people = _.reduce(peopleArray, {}, function(pplDict, person) {
+        pplDict[person.id] = person;
+        return pplDict;
+      });
+      cache.inbox.lastUpdated = (new Date()).valueOf();
+      cache.inbox.threads = threads;
+      cache.inbox.people = people;
+      if(active && end) end();
+      cb(threads, people);
+    });
+  } else {
+    if(active && end) end();
+    cb(cache.inbox.threads, cache.inbox.people);
+  }
+}
+
 function getNotifications(refresh, active, cb) {
   if(active && start) start();
   if(refresh || (!refresh && (new Date()).valueOf() - cache.notifications.lastUpdated > refreshTime)) {
@@ -151,7 +178,7 @@ function getStream(refresh, stream, cb) {
     FB.api({
       method: 'fql.multiquery',
       queries:
-        { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE ' + cond + ' LIMIT 30',
+        { news_feed: 'SELECT likes, comments, attachment, post_id, created_time, target_id, actor_id, message FROM stream WHERE ' + cond + ' LIMIT 20',
           people: 'SELECT id, name, pic_square, url FROM profile WHERE id IN (SELECT actor_id FROM #news_feed) OR id IN (SELECT target_id FROM #news_feed)'
         }
     },
@@ -250,28 +277,36 @@ function setupLoginLogoutHandlers() {
     showActiveIcon();
   });
 
-  checkNotifications();
+  checkNotificationsAndInbox();
 }
 
-function checkNotifications() {
+function checkNotificationsAndInbox() {
   if(isLoggedIn()) {
-  getNotifications(true, false, function(notifications, apps) {
-    console.log('updating notifications');
-    var count = 0;
-    for(var i = 0; i < notifications.length; i++) {
-      if(notifications[i].is_unread) {
-        count++;
-      }
-    }
-    if(count != 0) {
-      chrome.browserAction.setBadgeText({text: count + ""});
-    } else {
-      chrome.browserAction.setBadgeText({text: ""});
-    }
-  });
+    getNotifications(true, false, function(notifications, apps) {
+      console.log('updating notifications');
+      getInbox(true, false, function(threads, people) {
+        console.log('updating inbox');
+        var count = 0;
+        for(var i = 0; i < notifications.length; i++) {
+          if(notifications[i].is_unread) {
+            count++;
+          }
+        }
+        for(var i = 0; i < threads.length; i++) {
+          if(threads[i].unread > 0) {
+            count++;
+          }
+        }
+        if(count != 0) {
+          chrome.browserAction.setBadgeText({text: count + ""});
+        } else {
+          chrome.browserAction.setBadgeText({text: ""});
+        }
+      });
+    });
   }
 
-  timeout = setTimeout("checkNotifications()", refreshTime);
+  timeout = setTimeout("checkNotificationsAndInbox()", refreshTime);
 }
 
 function getProfilePic(cb) {
@@ -310,6 +345,6 @@ function markNotificationsAsRead(ids) {
   }, function(result) {
     console.log(result);
     clearTimeout(timeout);
-    checkNotifications();
+    checkNotificationsAndInbox();
   });
 }

@@ -138,7 +138,7 @@ button {
   display: none;
 }
 
-#stream > li, #wall > li, #notifications > li {
+#stream > li, #wall > li, #notifications > li, #inbox > li {
   padding-bottom: 5px;
   border-bottom: 1px solid #EEE;
   margin-bottom: 6px;
@@ -444,7 +444,7 @@ span.comment-submit button {
 }
 
 #logout-btn {
-  margin-top: 225px;
+  margin-top: 165px;
 }
 
 #logout-btn span button {
@@ -484,4 +484,20 @@ span.comment-submit button {
 
 #notifications li.unread {
   background-color: #FFFBC4;
+}
+
+.post .message .subject {
+  font-weight: bold;
+}
+
+.post .message .name {
+  font-weight: normal;
+}
+
+.post .message .snippet {
+  font-size: 11px;
+}
+
+.story.unread {
+  background-color: #EEEDF4;
 }

@@ -39,6 +39,14 @@ function refreshWall(start, end) {
   });
 }
 
+function refreshInbox(start, end) {
+  background.setStart(start);
+  background.setEnd(end);
+  background.getInbox(true, true, function(threads, people) {
+    showThreads(threads, people);
+  });
+}
+
 function refreshNotifications(start, end) {
   background.setStart(start);
   background.setEnd(end);
@@ -68,6 +76,12 @@ function getStream() {
 function getWall() {
   background.getStream(false, false, function(posts, people) {
     showWall(posts, people);
+  });
+}
+
+function getInbox() {
+  background.getInbox(false, true, function(threads, people) {
+    showThreads(threads, people);
   });
 }
 
