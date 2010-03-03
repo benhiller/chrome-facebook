@@ -2,11 +2,13 @@ Facebook for Google Chrome extension
 
 This branch uses Facebook Connect and will eventually replace the current version. Connect makes it much easier to add more functionality, (ex: notifications, inbox), and is a much cleaner interface.
 
+TODO before release:
+  Inbox icon
+
 TODO:
   Make like show up in list after commenting
   Implement 'view all likes'
   Improve handling of swf/video attchs
-  Inbox
   Publishing attacments (sites) via extension
 
 Note:
