@@ -143,7 +143,7 @@ function getNotifications(refresh, active, cb) {
     FB.api({
       method: 'fql.multiquery',
       queries:
-        { notifications: 'SELECT notification_id, title_html, app_id, created_time, is_unread FROM notification WHERE is_hidden = 0 AND recipient_id=' + uid(),
+        { notifications: 'SELECT notification_id, title_html, app_id, created_time, is_unread FROM notification WHERE recipient_id=' + uid(),
           apps: 'SELECT app_id, icon_url FROM application WHERE app_id IN (SELECT app_id FROM #notifications)'
         }
     },
