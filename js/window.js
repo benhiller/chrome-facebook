@@ -62,8 +62,8 @@ function getAllComments(post, postID) {
 }
 
 function getProfilePic() {
-  background.getProfilePic(function(url) {
-    showProfilePic(url);
+  background.getProfilePic(function(profile, url) {
+    showProfilePic(profile, url);
   });
 }
 

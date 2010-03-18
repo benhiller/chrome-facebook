@@ -311,16 +311,17 @@ function checkNotificationsAndInbox() {
 function getProfilePic(cb) {
   if(cache.profilePic.lastUpdated == 0) {
     FB.api({
-      method: 'fql.query', query: 'SELECT pic_square FROM profile WHERE id=' + FB.getSession().uid
+      method: 'fql.query', query: 'SELECT url, pic_square FROM profile WHERE id=' + FB.getSession().uid
     },
     function(result) {
       console.log(result);
       cache.profilePic.url = result[0].pic_square;
+      cache.profilePic.profile = result[0].url;
       cache.profilePic.lastUpdated = (new Date()).valueOf();
-      cb(result[0].pic_square);
+      cb(result[0].url, result[0].pic_square);
     });
   } else {
-    cb(cache.profilePic.url);
+    cb(cache.profilePic.profile, cache.profilePic.url);
   }
 }
 

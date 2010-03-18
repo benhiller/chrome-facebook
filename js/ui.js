@@ -11,8 +11,8 @@ function hideLogin() {
   $('#logout-btn').show();
 }
 
-function showProfilePic(url) {
-  $('#profile-pic').append('<img src="'+url+'" width="40" height="40"></img>');
+function showProfilePic(profile, url) {
+  $('#profile-pic').append('<a href="'+profile+'"><img src="'+url+'" width="40" height="40"></img></a>');
 }
 
 function showComposer() {
