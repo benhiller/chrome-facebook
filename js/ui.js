@@ -251,7 +251,7 @@ function processPost(post, people, area) {
     if(isArray(post.likes.sample)) {
       for(var i = 0; i < post.likes.sample.length; i++) {
         var liker = people[post.likes.sample[i]];
-        if(liker.name !== '') {
+        if(liker && liker.name !== '') {
           likes.append('<a href="'+liker.url+'">'+liker.name+'</a>');
         } else {
           likes.append('<span class="a">' + someoneText + '</a>');
