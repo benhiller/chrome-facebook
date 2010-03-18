@@ -78,7 +78,7 @@ function showNotifications(notifications, apps) {
 function processNotification(notification, app) {
   var notif = $('<li></li>');
   var text = $('<span class="notif-text"></span>');
-  text.append(notification.title_html);
+  text.append('<a href="' + notification.href + '">'+ notification.title_text + "</a>");
   if(app && app.icon_url) notif.append(text).css('background-image', 'url('+app.icon_url+')');
   if(notification.is_unread) {
     notif.addClass('unread');
