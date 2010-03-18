@@ -341,7 +341,6 @@ function initEvents() {
   }).data('content', '#wall');
 
   $('#inbox-btn').data('refresh', function() {
-      console.log('a');
     refreshInbox(animateRefresh, stopAnimatingRefresh);
   }).data('init', function() {
     getInbox();

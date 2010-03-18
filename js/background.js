@@ -283,25 +283,25 @@ function checkNotificationsAndInbox() {
   if(isLoggedIn()) {
     getNotifications(true, false, function(notifications, apps) {
       console.log('updating notifications');
-      getInbox(true, false, function(threads, people) {
-        console.log('updating inbox');
+      //getInbox(true, false, function(threads, people) {
+        // console.log('updating inbox');
         var count = 0;
         for(var i = 0; i < notifications.length; i++) {
           if(notifications[i].is_unread) {
             count++;
           }
         }
-        for(var i = 0; i < threads.length; i++) {
+        /* for(var i = 0; i < threads.length; i++) {
           if(threads[i].unread > 0) {
             count++;
           }
-        }
+        }*/
         if(count != 0) {
           chrome.browserAction.setBadgeText({text: count + ""});
         } else {
           chrome.browserAction.setBadgeText({text: ""});
         }
-      });
+      //});
     });
   }
 
