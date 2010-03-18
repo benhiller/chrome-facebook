@@ -51,7 +51,7 @@ function isLoggedIn() {
 function publish(status, cb) {
   FB.api({
     method: 'stream.publish',
-    message: status,
+    message: status
   }, function(result) {
     console.log(result);
     cb(result);

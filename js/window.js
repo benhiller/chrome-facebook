@@ -95,7 +95,6 @@ function markNotificationsAsRead() {
   background.getNotifications(false, false, function(notifications, apps) {
     var unreadIds = [];
     for(var i = 0; i < notifications.length; i++) {
-      console.log(notifications[i]);
       if(notifications[i].is_unread) {
         unreadIds.push(notifications[i].notification_id);
       }
