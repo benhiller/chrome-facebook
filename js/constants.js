@@ -2,7 +2,7 @@ var background = chrome.extension.getBackgroundPage();
 var apiKey = '5bcf0511a506d8d2a6d2141eeb404edc';
 var successURL = 'http://benhiller.github.com/success.html';
 var cancelURL = 'http://www.facebook.com/connect/login_failure.html';
-var permissions = 'read_stream,publish_stream,offline_access,read_mailbox';
+var permissions = 'read_stream,publish_stream,offline_access';
 var loginURL = 'http://www.facebook.com/login.php?api_key=' + apiKey +
                 '&fbconnect=true' +
                 '&v=1.0' +
