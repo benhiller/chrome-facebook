@@ -34,7 +34,6 @@ function removeStream() {
 function showThreads(threads, people) {
   console.log(threads, people);
   $('#inbox').empty();
-  $('#inbox').show();
   _.each(threads, function(thread) {
     processThreads(thread, people[thread.snippet_author]);
   });
@@ -51,7 +50,8 @@ function processThreads(thread, snippet_author) {
   var post = $('<div class="post"></div>');
 
   var message = $('<div class="message"></div>');
-  message.append('<div class="subject"><a href="http://facebook.com/?sk=messages&tid='+thread.thread_id+'">'+thread.subject+'</a></div>');
+  var subject = thread.subject == '' ? "(No subject)" : thread.subject;
+  message.append('<div class="subject"><a href="http://facebook.com/?sk=messages&tid='+thread.thread_id+'">'+subject+'</a></div>');
   message.find('.subject a').click(function() {
     setTimeout("forceNotificationRefresh()", 1000);
   });
@@ -69,7 +69,6 @@ function processThreads(thread, snippet_author) {
 function showNotifications(notifications, apps) {
   console.log(notifications, apps);
   $('#notifications').empty();
-  $('#notifications').show();
   _.each(notifications, function(notification) {
     processNotification(notification, apps[notification.app_id]);
   });
@@ -93,7 +92,6 @@ function showStream(posts, people) {
   });
   console.log(posts, idToPerson);
   $('#stream').empty();
-  $('#stream').show();
   _.each(posts, function(post) {
     processPost(post, idToPerson, $('#stream'));
   });
@@ -106,7 +104,6 @@ function showWall(posts, people) {
   });
   console.log(posts, idToPerson);
   $('#wall').empty();
-  $('#wall').show();
   _.each(posts, function(post) {
     processPost(post, idToPerson, $('#wall'));
   });
@@ -282,10 +279,12 @@ function processPost(post, people, area) {
 
 function initEvents() {
   $('#login-btn').click(function() {
+    localStorage['tab'] = '#stream';
     loginAttempt();
   });
 
   $('#logout-btn').click(function() {
+    localStorage['tab'] = '#stream';
     logout();
   });
 
@@ -315,6 +314,7 @@ function initEvents() {
 
   $('#items li:not(.selected)').live('click', function() {
       var content = $($(this).data('content'));
+      localStorage['tab'] = $(this).data('content');
       $($('#items li.selected').data('content')).slideUp().hide();
       $('#items li.button').each(function() {
         $($(this).data('content')).hide();
@@ -410,6 +410,19 @@ function initEvents() {
     var story = $(this).parents('li.story');
     getAllComments(story, story.data('post_id'));
   });
+
+  var content = $(localStorage['tab']);
+  $($('#items li.selected').data('content')).slideUp().hide();
+  $('#items li.button').each(function() {
+    $($(this).data('content')).hide();
+  });
+  content.slideDown();
+  $('#items li.selected').removeClass('selected');
+  $(localStorage['tab'] + '-btn').addClass('selected');
+  if(content.hasClass('empty')) {
+    ($(localStorage['tab'] + '-btn').data('init'))();
+    content.removeClass('empty');
+  }
 }
 
 function showActiveIcon() {
