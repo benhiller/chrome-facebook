@@ -512,3 +512,23 @@ span.comment-submit button {
   margin-top: -5px;
   padding-top: 5px;
 }
+
+.comment-pic {
+  padding-bottom: 2px;
+}
+
+.comment-pic img {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-left: -1px;
+  margin-top: 3px;
+}
+
+.comment-msg, .comment-info {
+  margin-left: 34px;
+}
+
+.comment-info {
+  margin-top: -1px;
+}

@@ -512,12 +512,14 @@ function renderComments(commentsObj, people) {
     var row = comments[i];
     var commenter = people[row.fromid];
     var commentItem = $('<li class="comment"></li>');
+    var commentPic = $('<div class="comment-pic"></div>');
+    commentPic.append('<img src="'+commenter.pic_square+'" />');
     var commentInfo = $('<div class="comment-info"></div>');
     commentInfo.append('<a href="' + commenter.url + '" class="comment-name">' + commenter.name + '</a>');
     var date = new Date(row.time * 1000);
     commentInfo.append('<span class="comment-time">' + jQuery.timeago(date) + '</a>');
     var commentMsg = $('<div class="comment-msg">'+ row.text +'</div>');
-    commentItem.append(commentInfo).append(commentMsg);
+    commentItem.append(commentPic).append(commentInfo).append(commentMsg);
     commentList.append(commentItem);
   }
   return commentList;
