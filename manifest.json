@@ -7,7 +7,7 @@
     "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
-  "version": "2.0.5",
+  "version": "2.0.6",
   "background_page": "background.html",
   "browser_action": {
     "default_icon": "images/icon19.png",
