@@ -411,6 +411,9 @@ function initEvents() {
     getAllComments(story, story.data('post_id'));
   });
 
+  if(localStorage['tab'] === undefined) {
+    localStorage['tab'] = '#stream';
+  }
   var content = $(localStorage['tab']);
   $($('#items li.selected').data('content')).slideUp().hide();
   $('#items li.button').each(function() {
