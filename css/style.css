@@ -291,7 +291,6 @@ button {
 
 #composer {
   width: 338px;
-  height: 30px;
   padding-left: 6px;
   padding-right: 6px;
   padding-bottom: 5px;
@@ -531,4 +530,9 @@ span.comment-submit button {
 
 .comment-info {
   margin-top: -1px;
+}
+
+#composer-btn {
+  float: right;
+  margin-right: 8px;
 }

@@ -423,6 +423,8 @@ function initEvents() {
     ($(localStorage['tab'] + '-btn').data('init'))();
     content.removeClass('empty');
   }
+
+  $('#composer textarea').TextAreaExpander(19 + 5 + 2);
 }
 
 function showActiveIcon() {
