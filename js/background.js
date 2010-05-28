@@ -240,7 +240,6 @@ function checkForSuccessPage() {
           // We found a match, now extract the login info and actually login
           var params = tabs[i].url.split('?')[1].split('&');
           var session = JSON.parse(unescape(params[0].split('=')[1]));
-          var perms = JSON.parse(unescape(params[1].split('=')[1]));
           login(session);
           chrome.tabs.onUpdated.removeListener(checkForSuccessPage);
           return;
