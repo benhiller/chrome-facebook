@@ -1,5 +1,11 @@
 Facebook for Google Chrome extension
 
+NOTE: This extension has been unmaintained for several years and is extremely unlikely to still work.
+
+
+----
+
+
 This branch uses Facebook Connect and will eventually replace the current version. Connect makes it much easier to add more functionality, (ex: notifications, inbox), and is a much cleaner interface.
 
 TODO:
